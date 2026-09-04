@@ -41,4 +41,21 @@ processado — nunca reescrito do zero.
 
 ---
 
+## Aula 03 — SQL e DDL: Definição de Estruturas
+
+| Campo | Valor |
+|---|---|
+| **Fonte** | `docs/aulas/Aula_03_SQL_DDL.md` + `docs/aulas/Aula_03_Gabarito.md` (repo de origem) |
+| **Tema principal** | DDL — `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP`; tipos de dados; constraints (`PRIMARY KEY`, `FOREIGN KEY` com `ON DELETE`/`ON UPDATE`, `UNIQUE`, `CHECK`); diferenças MariaDB × MySQL × PostgreSQL |
+| **Bloco/trilha** | Bloco 1 — Fundamentos e Modelagem (primeira aula do bloco de SQL de verdade) |
+| **Competências abordadas** | Criar/alterar/remover estruturas de banco com DDL; aplicar as 9 regras de nomenclatura da disciplina em SQL real (incluindo a Regra 7 — FK pelo papel semântico); escolher tipos de dados corretos (`DECIMAL` vs `FLOAT`, `CHAR` vs `VARCHAR`, `DATETIME` vs `TIMESTAMP`, `ENUM`); aplicar `PRIMARY KEY` simples/composta, `FOREIGN KEY` com ações de integridade referencial, `UNIQUE`, `CHECK`; modificar tabela existente com `ALTER TABLE` |
+| **SGBD utilizado** | MariaDB (primeiro alvo com SQL de verdade — a partir daqui volta a valer o padrão `.devcontainer` com MariaDB via `docker-compose.yml`). PostgreSQL aparece só como comparação conceitual no conteúdo da aula, sem exercício prático próprio — não é alvo de comparação explícita, então o template não sobe um segundo SGBD |
+| **Ferramentas** | Cliente `mysql` (linha de comando); extensão VS Code `cweijan.vscode-mysql-client2` |
+| **Artefato gerado como template** | `templates/aula-03-sql-ddl-estruturas/` — atividade formativa com um schema original de central de chamados técnicos (helpdesk): `CREATE DATABASE` idempotente + 5 `CREATE TABLE` (incluindo FK dupla por papel semântico e uma tabela N:M com atributo próprio) + 3 `ALTER TABLE`. Cenário inédito — nenhum dos 6 Checkpoints, 3 Exercícios de Fixação ou o exemplo de e-commerce da Seção 11 da aula original é reaproveitado (todos têm gabarito publicado em `Aula_03_Gabarito.md`) |
+| **Complexidade estimada** | Média-alta. Primeiro template a exigir um ambiente com banco de dados real funcionando (Codespace + MariaDB) e a primeira correção automática que executa SQL de verdade, não só analisa texto |
+| **Possibilidade de avaliação automática** | Sim, estrutural e via execução real — novo utilitário `shared/utilitarios/mariadb_ddl.py` roda o script entregue contra um MariaDB descartável e confere `INFORMATION_SCHEMA` (tabelas, colunas, PK, FK com `ON DELETE`/`ON UPDATE`, `UNIQUE`, `CHECK`, `ENUM`) — nunca compara o texto do SQL, para aceitar qualquer abordagem que chegue à mesma estrutura |
+| **Decisão arquitetural notável** | Primeiro `.devcontainer` com MariaDB real do repositório (`docker-compose.yml`); o serviço MariaDB de autograding foi adicionado ao workflow reaproveitável único (`_autograding-reusable.yml`) em vez de duplicado num segundo workflow — ver `docs/decisoes-arquiteturais.md` |
+
+---
+
 *(Próximos alvos processados serão adicionados abaixo desta linha, em ordem cronológica de processamento.)*

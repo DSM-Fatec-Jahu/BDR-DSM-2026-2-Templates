@@ -48,6 +48,23 @@ permissions:
 jobs:
   autograding:
     runs-on: ubuntu-latest
+    # MariaDB descartável para templates de SQL/DDL em diante (a partir da
+    # Aula 03) — ver docs/decisoes-arquiteturais.md, seção Aula 03, para o
+    # motivo de declarar o serviço aqui (workflow único e reaproveitável) em
+    # vez de duplicar toda a lógica de comentário/label num segundo
+    # workflow "só para templates com banco". Templates que não usam banco
+    # (Aulas 01/02) simplesmente não conectam nele — custo é só um
+    # `service container` extra subindo (poucos segundos) no job.
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=10
     steps:
       - name: Checkout do conteúdo do PR (fork) — só leitura, nada é executado
         uses: actions/checkout@v4
@@ -61,8 +78,19 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Garantir cliente mysql (usado por templates de SQL/DDL, Aula 03+)
+        run: command -v mysql || (sudo apt-get update && sudo apt-get install -y mariadb-client)
+
       - name: Rodar correção automática
         id: correcao
+        env:
+          # Só relevante para templates que executam SQL de verdade (Aula
+          # 03 em diante) — scripts de correção de templates anteriores
+          # (Aulas 01/02) simplesmente não leem essas variáveis.
+          DB_HOST: 127.0.0.1
+          DB_PORT: "3306"
+          DB_USER: root
+          DB_PASSWORD: root
         run: |
           python "${{ inputs.template-path }}/${{ inputs.avaliador-relativo }}" \
             --entrega "${{ inputs.template-path }}/${{ inputs.entrega-relativa }}" \

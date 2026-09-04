@@ -1,0 +1,42 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: atividade
+      MARIADB_USER: aluno
+      MARIADB_PASSWORD: aluno
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-dados:/var/lib/mysql
+      # Script de inicialização: concede a "aluno" privilégio para criar e
+      # remover QUALQUER database (não só "atividade") — necessário porque a
+      # Parte 1 desta atividade pede exatamente um CREATE DATABASE próprio
+      # (ex.: helpdesk_ti). Ver documentacao/enunciado.md e
+      # docs/decisoes-arquiteturais.md.
+      - ./init-db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  workspace:
+    image: mcr.microsoft.com/devcontainers/python:1-3.12-bullseye
+    volumes:
+      # Todo o repositório (não só a pasta deste template) fica montado em
+      # /workspace — necessário para que `sql/../../../shared/...`
+      # (import usado por tests/regras_avaliacao.py) exista dentro do
+      # container. O devcontainer.json aponta workspaceFolder para a
+      # subpasta deste template dentro desse mount, mantendo a mesma
+      # experiência "abra só a pasta do seu alvo" das Aulas 01 e 02.
+      - ../../..:/workspace:cached
+    command: sleep infinity
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+volumes:
+  mariadb-dados:

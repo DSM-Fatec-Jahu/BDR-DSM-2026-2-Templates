@@ -59,14 +59,20 @@ para gerar este repositório). Para processar um novo alvo:
 - Cada `templates/<alvo>/.devcontainer/devcontainer.json` é independente —
   um aluno abre só a pasta do seu template e tudo que a atividade precisa já
   vem configurado (banco de dados quando aplicável, extensões de VS Code,
-  mensagem de boas-vindas com os comandos básicos).
+  mensagem de boas-vindas com os comandos básicos). A partir da Aula 03,
+  "banco de dados quando aplicável" passa a significar um `docker-compose.yml`
+  com um serviço MariaDB de verdade — ver `docs/decisoes-arquiteturais.md`,
+  seção Aula 03.
 - O autograding é um workflow reaproveitável
   (`.github/workflows/_autograding-reusable.yml`, `workflow_call`) chamado
   por um workflow fino por alvo (`autograding-<alvo>.yml`), que só declara o
   gatilho `pull_request_target` com filtro de `paths` para a pasta daquele
   template. Ver `docs/decisoes-arquiteturais.md` para por que
   `pull_request_target` (não `pull_request`) é necessário aqui e por que
-  isso é seguro mesmo com entregas sempre vindas de fork.
+  isso é seguro mesmo com entregas sempre vindas de fork. Esse mesmo
+  workflow reaproveitável já sobe um serviço MariaDB descartável (usado só
+  pelos templates que executam SQL — Aula 03 em diante; os demais o
+  ignoram).
 - O resumo agregado (Fase 5B) é enviado, via `repository_dispatch`, a um
   repositório **privado** separado (`BDR-DSM-2026-2-Notas`) — nunca
   persistido neste repositório público, nem como artifact do Actions.
@@ -102,18 +108,30 @@ Cada template tem seu próprio script em `tests/`, que define as regras de
 correção daquele alvo especificamente (por exemplo,
 `templates/aula-01-modelagem-conceitual-mer/tests/regras_avaliacao.py`).
 Templates baseados em diagramas Mermaid reaproveitam o parser/validador
-genérico em `shared/utilitarios/mer_mermaid.py` — para mudar um critério de
-correção da Aula 01, edite a lista de critérios dentro do
-`regras_avaliacao.py` daquele template (funções `avaliar_parte_1` /
-`avaliar_parte_2`), não o parser compartilhado, a menos que a mudança deva
-valer para todos os templates que o usam.
+genérico em `shared/utilitarios/mer_mermaid.py`; templates com SQL de
+verdade (Aula 03 em diante) reaproveitam `shared/utilitarios/mariadb_ddl.py`
+(executa o script do aluno e introspecciona `INFORMATION_SCHEMA`). Ambos
+compartilham o formato de relatório de `shared/utilitarios/avaliacao.py`
+(`Criterio`, `montar_relatorio`, `relatorio_para_markdown`). Para mudar um
+critério de correção de um alvo específico, edite a lista de critérios
+dentro do `regras_avaliacao.py` daquele template (funções `avaliar_parte_1`
+/ `avaliar_parte_2`), não os utilitários compartilhados, a menos que a
+mudança deva valer para todos os templates que os usam.
 
 Para rodar a correção manualmente (fora do Actions), de dentro da pasta do
 template:
 
 ```bash
+# Templates baseados em Mermaid (Aulas 01/02):
 python tests/regras_avaliacao.py --entrega solucao-professor/<gabarito>.md
+
+# Templates com SQL de verdade (Aula 03+) — aponte para um MariaDB
+# acessível (o do .devcontainer, ou um XAMPP local, como na Aula 03):
+python tests/regras_avaliacao.py --entrega solucao-professor/<gabarito>.sql \
+    --host 127.0.0.1 --user root --password <senha-do-seu-mariadb>
 ```
 
 Rodar contra o próprio gabarito antes de publicar o template para os alunos
-é a forma mais rápida de pegar um critério mal calibrado.
+é a forma mais rápida de pegar um critério mal calibrado — no caso de
+templates com banco, também é a forma de garantir que o próprio gabarito
+executa sem erro de sintaxe no MariaDB.

@@ -18,7 +18,14 @@ critérios estruturais atendidos, sem peso na nota final. A **Aula 02**
 (`templates/aula-02-normalizacao-modelo-logico/`) segue o mesmo modelo,
 acrescentando dois critérios de "preenchimento mínimo" (não de conteúdo)
 para as duas análises escritas da atividade — ver "Limitações da correção
-automatizada" abaixo.
+automatizada" abaixo. A **Aula 03**
+(`templates/aula-03-sql-ddl-estruturas/`) também segue o mesmo modelo, mas
+muda **como** a estrutura é verificada: em vez de um parser de texto, o
+script do aluno é executado de verdade contra um MariaDB descartável, e a
+correção lê `INFORMATION_SCHEMA` — primeira vez que a correção automática
+deste repositório roda código entregue pelo aluno (SQL, não um programa de
+propósito geral; ver `docs/decisoes-arquiteturais.md` sobre por que isso é
+seguro mesmo vindo de fork).
 
 ### 2. Atividades avaliativas de peso na nota (T1, P1, T2, P2, R)
 
@@ -65,7 +72,7 @@ antecipar uma atividade avaliativa de peso. Ver `docs/plano-de-atividades.md`.
 
 ## Limitações da correção automatizada
 
-O autograder dessas aulas (`shared/utilitarios/mer_mermaid.py` +
+O autograder das Aulas 01/02 (`shared/utilitarios/mer_mermaid.py` +
 `tests/regras_avaliacao.py` de cada template) verifica **estrutura**:
 existência de entidades, nomenclatura de PK/FK, cardinalidade e
 participação de relacionamentos. Ele explicitamente **não** valida:
@@ -86,6 +93,25 @@ participação de relacionamentos. Ele explicitamente **não** valida:
   Critérios 1/2 da Seção 8.1, é avaliação manual do professor;
 - qualidade da escrita, clareza do diagrama, ou nomes de entidade/atributo
   que fujam ligeiramente da convenção mas sejam defensáveis.
+
+O autograder da Aula 03 (`shared/utilitarios/mariadb_ddl.py`) muda de
+mecanismo — executa o SQL de verdade e lê `INFORMATION_SCHEMA` — mas as
+mesmas limitações de fundo continuam valendo, com uma a mais específica de
+DDL real:
+
+- nomes de `CONSTRAINT` (`pk_...`, `fk_...`, `ck_...`), comentários no
+  código e ordem das colunas dentro de uma tabela não são avaliados — só o
+  efeito estrutural importa;
+- a expressão exata de um `CHECK` não é comparada — só se a constraint
+  existe e menciona a coluna esperada (`x > 0` e `0 < x` são equivalentes e
+  ambos aceitos), então um `CHECK` estruturalmente presente mas logicamente
+  incorreto (ex.: sinal invertido) pode passar na correção automática sem
+  ser semanticamente correto — checagem final de lógica de negócio,
+  como sempre, é manual;
+- nomes de banco/tabela/coluna, ao contrário de nomes de constraint,
+  **são** exigidos exatos — é assim que o corretor localiza o que o aluno
+  criou (documentado explicitamente no enunciado de cada atividade com SQL,
+  para não pegar o aluno de surpresa).
 
 A nota automática é **referência formativa** — a avaliação final de
 qualidade pedagógica de uma entrega continua sendo prerrogativa do

@@ -9,12 +9,12 @@ processado, e roadmap futuro.
 
 | Métrica | Valor |
 |---|---|
-| **Alvos analisados** | 2 (Aula 01, Aula 02) |
-| **Templates criados** | 2 — `templates/aula-01-modelagem-conceitual-mer/`, `templates/aula-02-normalizacao-modelo-logico/` |
+| **Alvos analisados** | 3 (Aula 01, Aula 02, Aula 03) |
+| **Templates criados** | 3 — `templates/aula-01-modelagem-conceitual-mer/`, `templates/aula-02-normalizacao-modelo-logico/`, `templates/aula-03-sql-ddl-estruturas/` |
 | **Projetos integradores criados** | 0 |
-| **SGBDs utilizados nos templates** | Nenhum ainda em uso real (Aulas 01 e 02 são pré-SQL). MariaDB é o padrão definido para quando o primeiro alvo com SQL for processado (a partir da Aula 03) |
-| **Templates com correção automática** | 2/2 (100%) — correção estrutural via parser Mermaid próprio, sem execução de banco |
-| **Utilitários compartilhados em `shared/`** | 1 — `shared/utilitarios/mer_mermaid.py` (parser/validador de `erDiagram`, agora reaproveitado por dois templates sem nenhuma alteração de código — validação do roadmap traçado após a Aula 01) |
+| **SGBDs utilizados nos templates** | MariaDB — em uso real pela primeira vez a partir da Aula 03 (`docker-compose.yml` no `.devcontainer`, MariaDB 11.4). Aulas 01 e 02 continuam pré-SQL |
+| **Templates com correção automática** | 3/3 (100%) — Aulas 01/02 via parser Mermaid próprio (estrutural, sem execução de banco); Aula 03 via execução real do SQL entregue contra MariaDB descartável + introspecção `INFORMATION_SCHEMA` |
+| **Utilitários compartilhados em `shared/`** | 3 — `shared/utilitarios/avaliacao.py` (estruturas genéricas de relatório, extraídas de `mer_mermaid.py` ao processar a Aula 03), `shared/utilitarios/mer_mermaid.py` (parser/validador de `erDiagram`, reaproveitado por dois templates), `shared/utilitarios/mariadb_ddl.py` (executor + introspector de DDL real via `INFORMATION_SCHEMA`, novo na Aula 03) |
 | **Repositório privado de notas (`BDR-DSM-2026-2-Notas`) configurado** | Pendente — depende de ação manual do professor (ver `docs/guia-professor.md`) |
 
 ---
@@ -28,12 +28,21 @@ processado, e roadmap futuro.
   sem nenhuma alteração de código — só o roteiro de critérios
   (`tests/regras_avaliacao.py`) muda por template. Ver
   `docs/decisoes-arquiteturais.md`, seção Aula 02.
-- **Aula 03 — SQL DDL**: primeiro alvo com SQL de verdade — primeiro
-  template a de fato precisar do `.devcontainer` com MariaDB no padrão
-  descrito no processo de geração deste repositório. Validará também se o
-  padrão de correção automática "estrutura de tabela, não string exata"
-  funciona bem para DDL real (existência de tabela/coluna/PK/FK/constraint
-  via `INFORMATION_SCHEMA`, não diff de texto).
+- ✅ **Aula 03 — SQL DDL**: processada. Primeiro alvo com SQL de
+  verdade — primeiro `.devcontainer` com MariaDB real
+  (`docker-compose.yml`) e primeiro autograder que executa o script do
+  aluno de fato, conferindo `INFORMATION_SCHEMA` em vez de comparar texto.
+  Validou o padrão "estrutura, não string exata" também para DDL real, e
+  gerou o segundo utilitário compartilhado (`shared/utilitarios/mariadb_ddl.py`)
+  já antecipado no roadmap anterior. Ver `docs/decisoes-arquiteturais.md`,
+  seção Aula 03.
+- **Aula 04 — DML (INSERT/UPDATE/DELETE)**: próximo alvo natural — primeiro
+  teste de reaproveitamento do padrão MariaDB estabelecido na Aula 03 (o
+  `.devcontainer` e `mariadb_ddl.py` devem precisar de zero ou poucas
+  mudanças) e primeiro alvo em que `shared/datasets/`/`shared/schemas/`
+  (reservados desde a Fase 2, ainda sem conteúdo) têm um caso de uso natural
+  se algum dataset for compartilhado entre templates de DML e de consultas
+  futuras.
 - **Aula 05 — Atividade T1 (Modelagem de Streaming)**: primeiro alvo
   avaliativo de peso — primeiro teste real do mecanismo de repositório
   privado individual descrito em `docs/estrategia-de-avaliacao.md` (ainda
@@ -41,10 +50,10 @@ processado, e roadmap futuro.
 
 ### Médio prazo
 
-- Consolidar em `shared/` um segundo utilitário: validador de `CREATE
-  TABLE` real (parsing de DDL MariaDB via `INFORMATION_SCHEMA`, não regex),
-  quando o Bloco 1 tiver templates suficientes com SQL para justificar a
-  generalização.
+- Observar, no primeiro template de DML real (Aula 04), se o padrão de
+  `services: mariadb` sempre presente em `_autograding-reusable.yml`
+  (Decisão 3 da Aula 03) continua sendo o melhor custo-benefício, ou se o
+  volume de templates com banco já justifica revisitar a decisão.
 - Primeira entrada em `docs/projetos-integradores.md` com um projeto de
   porte médio de fato definido (provavelmente o T1).
 - Avaliar, com dados reais de uso (uma vez que `BDR-DSM-2026-2-Notas`

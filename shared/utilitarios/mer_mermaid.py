@@ -16,6 +16,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Optional
 
+from .avaliacao import Criterio, montar_relatorio, relatorio_para_markdown  # noqa: F401  (reexportado)
+
 _ENTITY_START = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*\{\s*$")
 _ENTITY_END = re.compile(r"^\s*\}\s*$")
 _ATTRIBUTE = re.compile(
@@ -184,14 +186,6 @@ def parse_mermaid_er(texto: str) -> DiagramaParseado:
     return diagrama
 
 
-@dataclass
-class Criterio:
-    nome: str
-    passou: bool
-    detalhe: str
-    peso: float = 1.0
-
-
 def checar_entidade(diagrama: DiagramaParseado, nome: str, *, descricao: Optional[str] = None) -> Criterio:
     nome_exibicao = descricao or f"Entidade `{nome}` presente"
     if diagrama.tem_entidade(nome):
@@ -293,26 +287,3 @@ def checar_participacao(
     return Criterio(nome_criterio, False, f"Participação de `{entidade_avaliada}` encontrada como {real} (esperado {participacao_esperada}).")
 
 
-def montar_relatorio(criterios: list[Criterio]) -> dict:
-    """Agrega uma lista de Criterio em um dict pronto para virar JSON e Markdown."""
-    total_peso = sum(c.peso for c in criterios) or 1.0
-    peso_obtido = sum(c.peso for c in criterios if c.passou)
-    nota_10 = round((peso_obtido / total_peso) * 10, 2)
-    return {
-        "nota": nota_10,
-        "aprovados": sum(1 for c in criterios if c.passou),
-        "total_criterios": len(criterios),
-        "criterios": [
-            {"nome": c.nome, "passou": c.passou, "detalhe": c.detalhe, "peso": c.peso}
-            for c in criterios
-        ],
-    }
-
-
-def relatorio_para_markdown(titulo: str, relatorio: dict) -> str:
-    linhas = [f"## {titulo}", "", f"**Nota (referência formativa):** {relatorio['nota']} / 10 "
-              f"({relatorio['aprovados']}/{relatorio['total_criterios']} critérios atendidos)", ""]
-    for c in relatorio["criterios"]:
-        marca = "✅" if c["passou"] else "❌"
-        linhas.append(f"- {marca} **{c['nome']}** — {c['detalhe']}")
-    return "\n".join(linhas)

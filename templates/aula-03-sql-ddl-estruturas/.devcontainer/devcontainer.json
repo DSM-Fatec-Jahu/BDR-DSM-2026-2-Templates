@@ -1,0 +1,25 @@
+{
+  "name": "BDR — Aula 03 — SQL e DDL: Definição de Estruturas",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "workspace",
+  "workspaceFolder": "/workspace/templates/aula-03-sql-ddl-estruturas",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "cweijan.vscode-mysql-client2",
+        "ms-python.python",
+        "yzhang.markdown-all-in-one"
+      ]
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/boas-vindas.sh",
+  "postAttachCommand": {
+    "abrir-readme": "code README.md || true"
+  }
+}

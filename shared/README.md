@@ -7,9 +7,9 @@ template, não aqui (ver `docs/guia-professor.md`).
 
 | Subpasta | Conteúdo | Status |
 |---|---|---|
-| `utilitarios/` | Código Python reaproveitável entre templates | Em uso — `mer_mermaid.py` (parser/validador de diagramas `erDiagram` Mermaid, usado pelo autograding das Aulas 01 e 02, sem nenhuma alteração de código entre os dois usos) |
+| `utilitarios/` | Código Python reaproveitável entre templates | Em uso — `avaliacao.py` (estruturas genéricas `Criterio`/`montar_relatorio`/`relatorio_para_markdown`, extraídas de `mer_mermaid.py` ao processar a Aula 03 para serem compartilhadas por qualquer autograder); `mer_mermaid.py` (parser/validador de diagramas `erDiagram` Mermaid, usado pelo autograding das Aulas 01 e 02); `mariadb_ddl.py` (executor + introspector de DDL real via `INFORMATION_SCHEMA`, usado a partir da Aula 03 — primeiro template com SQL de verdade) |
 | `datasets/` | Dados fictícios (nunca reais/sensíveis) usados por mais de um template | Reservado — sem conteúdo ainda |
-| `schemas/` | Definições de schema (DDL) reaproveitadas entre templates | Reservado — sem conteúdo ainda (primeiro uso esperado a partir da Aula 03) |
+| `schemas/` | Definições de schema (DDL) reaproveitadas entre templates | Reservado — sem conteúdo ainda (a Aula 03 tem SQL de verdade, mas o schema `helpdesk_ti` é específico dessa atividade — vive em `templates/aula-03-sql-ddl-estruturas/`, não aqui) |
 | `carga/` | Scripts de carga/seed de dados | Reservado — sem conteúdo ainda |
 | `testes/` | Casos de teste/fixtures reaproveitáveis | Reservado — sem conteúdo ainda |
 | `exemplos/` | Exemplos de referência reaproveitados em mais de um template | Reservado — sem conteúdo ainda |

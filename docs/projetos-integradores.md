@@ -36,6 +36,20 @@ depende. Uma conexão direta:
 | **Atividade T1 — Modelagem de Sistema de Streaming** (Aula 05, ainda não processada como alvo) | Médio | O T1 pede um MER completo *e* sua passagem ao modelo lógico normalizado — não só o diagrama conceitual da Aula 01. A Parte 2 do template da Aula 02 (rede de hotéis) pratica exatamente o tipo de decisão que o T1 vai exigir num domínio diferente: relacionamento N:M com atributo próprio (Reserva×Quarto ↔ Playlist×Música/Filme do T1) e decisão de lado de FK em 1:1. |
 | **Projeto integrador semestral** (natureza ainda a definir — depende de quais aulas de Bloco 3/4 forem processadas) | Semestral | Qualquer projeto de banco de dados completo, de qualquer domínio, precisa passar por normalização antes do `CREATE TABLE`. A Aula 02, como a Aula 01, é pré-requisito transversal, não específico a um domínio. |
 
+## Aula 03 — SQL e DDL: Definição de Estruturas
+
+Diferente das Aulas 01 e 02, a Aula 03 não é só pré-requisito conceitual —
+é o primeiro alvo cujo **artefato técnico** (o padrão de `.devcontainer`
+com MariaDB, e o utilitário `shared/utilitarios/mariadb_ddl.py`) é
+reaproveitável por qualquer projeto futuro que precise rodar SQL de
+verdade, não só o conteúdo pedagógico.
+
+| Projeto associado | Porte | Como a Aula 03 alimenta |
+|---|---|---|
+| **Atividade T1 — Modelagem de Sistema de Streaming** (Aula 05, ainda não processada como alvo) | Médio | O T1 herda da Aula 02 o modelo lógico; a Aula 03 é o que ensina a transformar esse tipo de modelo em `CREATE TABLE` executável — se o T1 pedir a entrega em SQL (não só em `erDiagram`), o `.devcontainer`/autograder desta aula é o padrão técnico a reaproveitar, não recriar do zero. |
+| **Qualquer atividade futura com SQL de verdade** (DML na Aula 04, consultas em blocos seguintes) | Transversal | O `.devcontainer` com `docker-compose.yml` + MariaDB e o utilitário `shared/utilitarios/mariadb_ddl.py` (executor de script + introspecção via `INFORMATION_SCHEMA`) são o padrão técnico estabelecido aqui — templates futuros com SQL real reaproveitam a mesma infraestrutura, só trocando o schema/critérios específicos do alvo. |
+| **Projeto integrador semestral** (natureza ainda a definir) | Semestral | Qualquer projeto de banco de dados completo depende de DDL funcional antes de qualquer dado ou consulta. |
+
 ## Padrão a seguir quando um projeto integrador for de fato processado
 
 Quando `T1 — Modelagem Streaming` (ou outro projeto) for solicitado como

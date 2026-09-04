@@ -20,6 +20,7 @@ automaticamente via **GitHub Actions** — sem depender do GitHub Classroom
 |---|---|---|
 | Aula 01 — Modelagem Conceitual (MER) | [`templates/aula-01-modelagem-conceitual-mer/`](templates/aula-01-modelagem-conceitual-mer/) | ✅ Disponível |
 | Aula 02 — Normalização e Modelo Lógico | [`templates/aula-02-normalizacao-modelo-logico/`](templates/aula-02-normalizacao-modelo-logico/) | ✅ Disponível |
+| Aula 03 — SQL e DDL: Definição de Estruturas | [`templates/aula-03-sql-ddl-estruturas/`](templates/aula-03-sql-ddl-estruturas/) | ✅ Disponível |
 
 *(Tabela atualizada a cada novo alvo processado.)*
 

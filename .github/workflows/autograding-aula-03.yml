@@ -1,0 +1,22 @@
+name: "Autograding — Aula 03 — SQL e DDL: Definição de Estruturas"
+
+# Ver .github/workflows/_autograding-reusable.yml para a explicação de por
+# que este gatilho é `pull_request_target` (não `pull_request`) e por que
+# isso é seguro mesmo entregas vindo sempre de forks de alunos. Este é o
+# primeiro alvo cujo script de correção executa SQL de verdade contra o
+# serviço MariaDB declarado no workflow reaproveitável.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "templates/aula-03-sql-ddl-estruturas/**"
+
+jobs:
+  autograding:
+    uses: ./.github/workflows/_autograding-reusable.yml
+    with:
+      template-path: templates/aula-03-sql-ddl-estruturas
+      template-slug: aula-03
+      entrega-relativa: sql/helpdesk.sql
+      avaliador-relativo: tests/regras_avaliacao.py
+    secrets: inherit

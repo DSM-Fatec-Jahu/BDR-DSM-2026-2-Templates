@@ -130,4 +130,74 @@ sozinho depois de tentar, sem depender de horário de atendimento.
 
 ---
 
+---
+
+## Aula 03 — SQL e DDL: Definição de Estruturas
+
+**Modalidade sugerida: individual.** É a primeira vez que o aluno interage
+com um banco de dados de verdade rodando (Codespace + MariaDB); erros de
+sintaxe e de ambiente (esquecer `USE`, esquecer `;`, digitar um tipo
+inexistente) fazem parte do aprendizado esperado desta aula, e resolver
+esses erros sozinho — lendo a mensagem do MariaDB, que a própria correção
+automática reproduz literalmente — é uma habilidade que se perde em dupla
+(um dos dois tende a "dirigir" o teclado enquanto o outro só acompanha).
+
+**Justificativa da escolha do conteúdo do template:** como nas Aulas 01 e
+02, nenhum Checkpoint, Exercício de Fixação ou o exemplo de e-commerce da
+Seção 11 foi reaproveitado (todos têm gabarito publicado). O cenário de
+central de chamados técnicos (helpdesk) foi desenhado para cobrir a mesma
+superfície de mecanismos do exemplo original — FK pelo papel semântico
+(Regra 7), N:M com atributo próprio, `CHECK`, as três variações de `ON
+DELETE` — em um domínio inédito. Ver `docs/decisoes-arquiteturais.md`,
+seção Aula 03, item 6.
+
+### Em sala (aula síncrona)
+
+Sugestão de condução: como é a primeira atividade com ambiente de banco de
+dados real, reservar tempo de aula para o passo "abrir o Codespace e
+esperar o MariaDB subir" antes mesmo de começar a Parte 1 — é comum que
+essa primeira conexão gere dúvidas sobre host/porta/usuário que não têm
+relação com DDL em si, mas que bloqueiam o aluno se não forem resolvidas
+logo. Depois disso, a Parte 1 (schema completo) se beneficia de ser
+resolvida tabela por tabela, testando cada `CREATE TABLE` isoladamente
+antes de passar para a próxima — em vez de escrever o script inteiro e só
+então testar, estratégia que dificulta isolar em qual tabela está o erro
+de sintaxe.
+
+### Desafio extra
+
+Para alunos que terminam adiantado: pedir para adicionar uma tabela
+`avaliacoes_chamado` (1:1 com `chamados`, entidade fraca — só existe depois
+que o chamado é fechado), com uma nota de 1 a 5 e um comentário opcional do
+cliente, e um `CHECK` garantindo que só é possível avaliar um chamado com
+`status = 'fechado'` teria que ser feito em nível de aplicação, não de
+`CHECK` (que não enxerga outras linhas) — bom gancho para apresentar
+informalmente por que `CHECK` não substitui um `TRIGGER` (tema fora do
+escopo formal desta aula). Não formalizar como parte obrigatória do
+template.
+
+### Recuperação
+
+Para quem entrega abaixo do esperado na nota formativa: como a atividade
+não tem peso na nota final, "recuperação" aqui significa revisão guiada.
+Sugestão: usar o Exercício 2 da própria Aula 03 (sistema de biblioteca, com
+gabarito publicado em `Aula_03_Gabarito.md`) como material de reforço
+individual — o aluno reescreve o schema sozinho e só depois confere contra
+o gabarito público, prática de "fechar o ciclo" sem depender de
+atendimento.
+
+### Monitoria
+
+Os 6 Checkpoints da Aula 03 (nomenclatura, `CREATE DATABASE`, tipos de
+dados, `CREATE TABLE`/constraints, `ALTER TABLE`, `DROP` e ordem de
+exclusão) ficam disponíveis para atendimento individual em monitoria — como
+já têm gabarito publicado, servem bem para o aluno testar hipóteses e
+conferir sozinho, especialmente o Checkpoint 6 (ordem de `DROP` com FKs),
+que o template desta atividade não cobre por não ser estruturalmente
+verificável do mesmo jeito (a tabela deixa de existir depois do `DROP`, o
+que dificulta uma checagem via `INFORMATION_SCHEMA` tão direta quanto as
+demais).
+
+---
+
 *(Cada novo alvo processado ganha uma seção própria acima desta linha.)*

@@ -171,3 +171,118 @@ cardinalidade corretos para expressar "participação total de
 1:1 (ver Decisão 1 acima) — um erro fácil de cometer ao escrever o
 `erDiagram` manualmente, e que só o teste automatizado contra o próprio
 gabarito pegou antes de chegar ao aluno.
+
+---
+
+## Aula 03 — SQL e DDL: Definição de Estruturas
+
+### 1. Primeiro `.devcontainer` com MariaDB real (`docker-compose.yml`)
+
+Como antecipado nas Decisões 1 (Aula 01) e 2 (Aula 02), o padrão MariaDB via
+`docker-compose.yml` volta a valer a partir daqui — é a primeira aula com
+SQL de verdade. O `.devcontainer` sobe dois serviços: `mariadb` (imagem
+oficial `mariadb:11.4`, a LTS mais recente disponível no momento do
+processamento) e `workspace` (a imagem Python já usada nos templates
+anteriores, para manter `python tests/regras_avaliacao.py` funcionando sem
+instalação adicional). O volume do repositório inteiro é montado em
+`/workspace` e `workspaceFolder` aponta para a subpasta deste template
+dentro desse mount — replica o mesmo comportamento efetivo do
+`devcontainer.json` simples (sem compose) das Aulas 01/02, em que o
+workspace "aberto" por padrão é a pasta do template, mas o restante do
+repositório (em especial `shared/`) continua acessível por caminho
+relativo, porque `tests/regras_avaliacao.py` depende disso.
+
+### 2. Usuário `aluno` recebe `GRANT ALL PRIVILEGES ON *.*`, não só sobre `atividade`
+
+A imagem oficial do MariaDB, quando configurada com `MARIADB_USER`/
+`MARIADB_PASSWORD`/`MARIADB_DATABASE`, concede a esse usuário privilégio
+só sobre o banco indicado em `MARIADB_DATABASE` (aqui, `atividade`, mantido
+por seguir literalmente a Fase 4 do processo de geração deste repositório).
+Mas a Parte 1 desta atividade pede exatamente um `CREATE DATABASE` **novo**
+(`helpdesk_ti`), e o usuário `aluno` precisa conseguir criar (e recriar,
+idempotentemente) esse banco. A solução foi um script em
+`.devcontainer/init-db/00-privilegios.sql`, montado em
+`/docker-entrypoint-initdb.d/` (mecanismo padrão da imagem oficial do
+MariaDB para rodar SQL na primeira inicialização), concedendo `GRANT ALL
+PRIVILEGES ON *.*` a `aluno`. O banco `atividade` continua existindo e
+acessível (é só o "database de boas-vindas" da imagem), mas não é usado
+pelo enunciado desta atividade.
+
+### 3. Serviço MariaDB adicionado ao workflow reaproveitável único, não duplicado
+
+`_autograding-reusable.yml` (Decisão 6 da Aula 01) ganhou um bloco
+`services: mariadb: ...` no nível do job, sempre presente — mesmo quando o
+alvo que disparou o workflow (Aulas 01/02) não usa banco nenhum. A
+alternativa considerada foi criar um segundo arquivo reaproveitável
+(`_autograding-reusable-mariadb.yml`) só para templates com banco, mas isso
+duplicaria as ~150 linhas de lógica de comentário/rotulagem/payload
+agregado (Fase 5B) que já existem no arquivo único — exatamente a
+duplicação que a Decisão 6 da Aula 01 queria evitar. O custo aceito é um
+container de serviço MariaDB subindo (poucos segundos, com healthcheck) em
+**todo** PR de **todo** template, mesmo nos que não o usam; nenhum script de
+correção das Aulas 01/02 lê as variáveis de ambiente de conexão
+(`DB_HOST`/`DB_PORT`/`DB_USER`/`DB_PASSWORD`, também adicionadas ao passo
+"Rodar correção automática"), então o comportamento delas não muda. Em CI,
+o serviço usa só o usuário `root` (sem a complicação do `GRANT` do
+`.devcontainer` local) — o runner do GitHub Actions não é compartilhado
+entre execuções, então não há necessidade da mesma separação de privilégio
+usada no ambiente de desenvolvimento.
+
+### 4. `shared/utilitarios/avaliacao.py` — extração das estruturas genéricas de relatório
+
+`Criterio`, `montar_relatorio` e `relatorio_para_markdown` viviam dentro de
+`mer_mermaid.py`, mas não têm nenhuma dependência de Mermaid — são só o
+formato de relatório que `_autograding-reusable.yml` espera. O novo
+autograder desta aula (`shared/utilitarios/mariadb_ddl.py` +
+`tests/regras_avaliacao.py` deste template) precisava exatamente da mesma
+estrutura, sem precisar depender do parser de Mermaid para ganhar acesso a
+ela. Extraídas para `shared/utilitarios/avaliacao.py`; `mer_mermaid.py`
+passou a importar de lá (reexportando os três nomes, para não quebrar o
+`import` já existente em `tests/regras_avaliacao.py` das Aulas 01/02). Os
+dois autograders existentes foram rodados de novo contra seus gabaritos
+depois da extração (mesmo resultado de antes — 36/36 e 53/53 critérios) para
+confirmar que o refactor não alterou nenhum comportamento.
+
+### 5. `shared/utilitarios/mariadb_ddl.py` usa o cliente `mysql` via `subprocess`, não um driver Python
+
+Mesma filosofia "sem dependência externa" de `mer_mermaid.py` (documentada
+implicitamente pelo `README.md` da Aula 02: "nenhuma dependência externa é
+instalada"). Em vez de instalar `mysql-connector-python` ou `PyMySQL` via
+`pip`, o módulo chama o cliente `mysql` de linha de comando (já presente
+nos runners `ubuntu-latest` do GitHub Actions, e garantido por uma etapa
+`apt-get install mariadb-client` de segurança no workflow) — tanto para
+executar o script `.sql` inteiro do aluno quanto para consultar
+`INFORMATION_SCHEMA` (modo `-N -B`, saída tabulada sem cabeçalho, fácil de
+parsear com `str.split("\t")`). Evita expandir a superfície de dependências
+do repositório por causa de um único template.
+
+### 6. Cenário original (central de chamados técnicos) em vez do e-commerce da Seção 11 ou dos Checkpoints/Exercícios
+
+Mesmo critério de exclusão já aplicado nas Aulas 01 e 02: o exemplo de
+e-commerce construído passo a passo na Seção 11 da aula, os 6 Checkpoints e
+os 3 Exercícios de Fixação da Seção 12 têm todos resolução publicada em
+`Aula_03_Gabarito.md` — usar qualquer um deles tornaria a correção
+automática pouco significativa. O cenário de helpdesk foi desenhado para
+cobrir a mesma superfície de mecanismos do exemplo original: FK pelo papel
+semântico (`cliente_id`/`tecnico_responsavel_id` → `usuarios`, equivalente a
+`cliente_id`/`funcionario_id` → `pessoas` da Seção 6.5), relacionamento N:M
+com atributo próprio (`tecnicos_chamados.horas_dedicadas`, equivalente a
+`itens_pedidos.preco_unitario`), `ENUM` de domínio fechado, `CHECK`
+envolvendo duas colunas da mesma linha, e as três variações de `ON DELETE`
+(`CASCADE`, `RESTRICT`, `SET NULL`) — sem reaproveitar nenhum nome de
+tabela, coluna ou domínio de negócio já usado no material original ou nos
+templates das Aulas 01/02.
+
+### 7. Duas partes no relatório (`parte_1`/`parte_2`), não três
+
+O enunciado tem três seções pedagógicas distintas (banco, tabelas, `ALTER
+TABLE`), mas o formato de relatório que `_autograding-reusable.yml` monta
+(`relatorioParte("Parte 1", ...)` / `relatorioParte("Parte 2", ...)`) está
+fixado em duas partes. Em vez de generalizar esse trecho de JavaScript para
+um número variável de partes (mudança de maior risco no arquivo
+compartilhado, sem necessidade concreta ainda), a Parte 1 do enunciado
+(`CREATE DATABASE` + `CREATE TABLE`) e a "Parte 1b" pedagógica (tabelas)
+foram fundidas num único `parte_1` no relatório, com `parte_2` reservada
+para os três `ALTER TABLE`. Se um alvo futuro precisar de três ou mais
+partes de fato independentes, aí sim vale generalizar o workflow
+reaproveitável — não antes.
