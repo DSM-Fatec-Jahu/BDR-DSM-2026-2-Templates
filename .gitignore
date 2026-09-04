@@ -1,0 +1,28 @@
+# Gabarito do professor — nunca deve ser versionado neste repositório público.
+# Existe localmente em cada templates/<alvo>/solucao-professor/, mas nunca
+# aparece em nenhum commit e, portanto, nunca chega ao fork de um aluno.
+**/solucao-professor/
+
+# Saída local do autograder (gerada ao rodar tests/regras_avaliacao.py na
+# própria máquina antes de commitar) — não faz parte da entrega.
+resultado.json
+**/resultado.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node (caso algum template/ferramenta futura use JS)
+node_modules/
+
+# Editores e SO
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# MkDocs (caso alguma doc local gere build)
+site/
