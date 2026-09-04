@@ -9,12 +9,12 @@ processado, e roadmap futuro.
 
 | Métrica | Valor |
 |---|---|
-| **Alvos analisados** | 1 (Aula 01) |
-| **Templates criados** | 1 — `templates/aula-01-modelagem-conceitual-mer/` |
+| **Alvos analisados** | 2 (Aula 01, Aula 02) |
+| **Templates criados** | 2 — `templates/aula-01-modelagem-conceitual-mer/`, `templates/aula-02-normalizacao-modelo-logico/` |
 | **Projetos integradores criados** | 0 |
-| **SGBDs utilizados nos templates** | Nenhum ainda em uso real (Aula 01 é pré-SQL). MariaDB é o padrão definido para quando o primeiro alvo com SQL for processado (a partir da Aula 03) |
-| **Templates com correção automática** | 1/1 (100%) — correção estrutural via parser Mermaid próprio, sem execução de banco |
-| **Utilitários compartilhados em `shared/`** | 1 — `shared/utilitarios/mer_mermaid.py` (parser/validador de `erDiagram`, reaproveitável por qualquer aula futura de modelagem) |
+| **SGBDs utilizados nos templates** | Nenhum ainda em uso real (Aulas 01 e 02 são pré-SQL). MariaDB é o padrão definido para quando o primeiro alvo com SQL for processado (a partir da Aula 03) |
+| **Templates com correção automática** | 2/2 (100%) — correção estrutural via parser Mermaid próprio, sem execução de banco |
+| **Utilitários compartilhados em `shared/`** | 1 — `shared/utilitarios/mer_mermaid.py` (parser/validador de `erDiagram`, agora reaproveitado por dois templates sem nenhuma alteração de código — validação do roadmap traçado após a Aula 01) |
 | **Repositório privado de notas (`BDR-DSM-2026-2-Notas`) configurado** | Pendente — depende de ação manual do professor (ver `docs/guia-professor.md`) |
 
 ---
@@ -23,10 +23,11 @@ processado, e roadmap futuro.
 
 ### Curto prazo — próximos alvos naturais do Bloco 1
 
-- **Aula 02 — Normalização**: primeiro alvo que deve produzir um template
-  com modelo **lógico** (não mais só conceitual) — provável primeiro uso
-  real de `shared/utilitarios/mer_mermaid.py` por um segundo template,
-  validando se o parser genérico realmente se sustenta fora da Aula 01.
+- ✅ **Aula 02 — Normalização**: processada. Confirmou que
+  `shared/utilitarios/mer_mermaid.py` se sustenta fora do caso original
+  sem nenhuma alteração de código — só o roteiro de critérios
+  (`tests/regras_avaliacao.py`) muda por template. Ver
+  `docs/decisoes-arquiteturais.md`, seção Aula 02.
 - **Aula 03 — SQL DDL**: primeiro alvo com SQL de verdade — primeiro
   template a de fato precisar do `.devcontainer` com MariaDB no padrão
   descrito no processo de geração deste repositório. Validará também se o

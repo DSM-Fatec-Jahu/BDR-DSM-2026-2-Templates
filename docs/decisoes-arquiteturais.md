@@ -106,3 +106,68 @@ estiver configurado, o step falha de forma graciosa (aviso, não erro) —
 a correção individual do aluno no PR continua funcionando normalmente,
 só o painel do professor fica sem aquele registro até o secret ser
 configurado (ver `docs/guia-professor.md`, seção de configuração manual).
+
+---
+
+## Aula 02 — Normalização e Modelo Lógico
+
+### 1. Reaproveitamento integral do `shared/utilitarios/mer_mermaid.py`, sem nenhuma alteração no parser
+
+O roadmap traçado ao processar a Aula 01 (`docs/relatorio-executivo.md`)
+previa a Aula 02 como "primeiro uso real" do parser compartilhado por um
+segundo template, para validar se ele se sustentava fora do caso original.
+Confirmado: o parser de `erDiagram` foi usado sem nenhuma mudança de
+código — as únicas adições feitas para a Aula 02 foram no roteiro de
+critérios (`tests/regras_avaliacao.py` deste template), não no parser em
+si. O único ponto de atenção foi a semântica dos tokens de cardinalidade
+Crow's Foot (`_TOKENS` em `mer_mermaid.py`): o token adjacente ao *nome* de
+uma entidade no texto do diagrama determina a participação **dessa mesma**
+entidade (não da outra ponta do relacionamento) — confirmado testando o
+gabarito deste template contra o autograder antes de publicar (ver Seção 4
+abaixo).
+
+### 2. Sem `.devcontainer` com MariaDB, mesmo motivo da Aula 01
+
+A Aula 02 continua anterior a qualquer SQL de verdade — o resultado da
+atividade é um modelo lógico em Mermaid, não uma tabela criada em banco.
+O `.devcontainer/devcontainer.json` deste template é praticamente idêntico
+ao da Aula 01 (mesma imagem Python, mesmas extensões de Mermaid). O padrão
+MariaDB só entra a partir da Aula 03 (DDL).
+
+### 3. Dois cenários próprios (oficina mecânica, rede de hotéis), não os Checkpoints/Exercícios da aula original
+
+Mesmo critério de exclusão já aplicado na Decisão 3 da Aula 01: os 6
+Checkpoints da Aula 02 têm gabarito publicado em `Aula_02_Gabarito.md`, e
+os 3 Exercícios de Fixação da Seção 10 **também** têm gabarito publicado
+no mesmo arquivo (diferente da Aula 01, cujos Exercícios de Fixação não
+tinham gabarito público — por isso puderam ser reaproveitados). Como
+nenhum exercício da Aula 02 ficou "livre" de gabarito público, o template
+usa dois cenários inéditos, escritos especificamente para esta atividade:
+
+- **Parte 1 (normalização):** oficina mecânica, com uma tabela
+  desnormalizada que tem duas camadas de dependência (parcial de
+  `id_ordem`, com uma transitiva escondida dentro dela — via
+  `placa_veiculo`, `cliente_cpf` e `mecanico_matricula`), estruturalmente
+  equivalente ao exemplo passo a passo da própria Seção 7 da aula (sistema
+  de escola), mas em outro domínio.
+- **Parte 2 (modelo lógico):** rede de hotéis, cobrindo deliberadamente os
+  quatro tipos de relacionamento da Seção 8 num único cenário coerente —
+  1:N (Hóspede×Reserva), N:M com atributo do relacionamento
+  (Reserva×Quarto, `valor_diaria_negociado`), 1:1 com decisão de lado de FK
+  (Hóspede×Cartão_Fidelidade) e entidade fraca (Diária, dependente de
+  Reserva) — mesma estrutura de composição usada no Checkpoint 6 da aula
+  original (e-sports), mas em outro domínio, para preservar o valor
+  pedagógico sem repetir um cenário com gabarito já público.
+
+### 4. Validação do gabarito contra o autograder antes de publicar
+
+Como recomendado em `docs/guia-professor.md`, o gabarito
+(`solucao-professor/modelo-logico-gabarito.md`) foi rodado contra
+`tests/regras_avaliacao.py` antes deste template ser considerado pronto —
+resultado: 53/53 critérios atendidos (10/10 em ambas as partes). Essa
+rodada foi o que revelou a necessidade de escolher os tokens de
+cardinalidade corretos para expressar "participação total de
+`CARTOES_FIDELIDADE`, participação parcial de `HOSPEDES`" no relacionamento
+1:1 (ver Decisão 1 acima) — um erro fácil de cometer ao escrever o
+`erDiagram` manualmente, e que só o teste automatizado contra o próprio
+gabarito pegou antes de chegar ao aluno.

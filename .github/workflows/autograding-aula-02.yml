@@ -1,0 +1,20 @@
+name: Autograding — Aula 02 — Normalização e Modelo Lógico
+
+# Ver .github/workflows/_autograding-reusable.yml para a explicação de por
+# que este gatilho é `pull_request_target` (não `pull_request`) e por que
+# isso é seguro mesmo entregas vindo sempre de forks de alunos.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "templates/aula-02-normalizacao-modelo-logico/**"
+
+jobs:
+  autograding:
+    uses: ./.github/workflows/_autograding-reusable.yml
+    with:
+      template-path: templates/aula-02-normalizacao-modelo-logico
+      template-slug: aula-02
+      entrega-relativa: sql/modelo-logico.md
+      avaliador-relativo: tests/regras_avaliacao.py
+    secrets: inherit

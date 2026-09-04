@@ -19,6 +19,7 @@ automaticamente via **GitHub Actions** — sem depender do GitHub Classroom
 | Aula/Atividade | Template | Status |
 |---|---|---|
 | Aula 01 — Modelagem Conceitual (MER) | [`templates/aula-01-modelagem-conceitual-mer/`](templates/aula-01-modelagem-conceitual-mer/) | ✅ Disponível |
+| Aula 02 — Normalização e Modelo Lógico | [`templates/aula-02-normalizacao-modelo-logico/`](templates/aula-02-normalizacao-modelo-logico/) | ✅ Disponível |
 
 *(Tabela atualizada a cada novo alvo processado.)*
 

@@ -7,7 +7,7 @@ template, não aqui (ver `docs/guia-professor.md`).
 
 | Subpasta | Conteúdo | Status |
 |---|---|---|
-| `utilitarios/` | Código Python reaproveitável entre templates | Em uso — `mer_mermaid.py` (parser/validador de diagramas `erDiagram` Mermaid, usado pelo autograding da Aula 01) |
+| `utilitarios/` | Código Python reaproveitável entre templates | Em uso — `mer_mermaid.py` (parser/validador de diagramas `erDiagram` Mermaid, usado pelo autograding das Aulas 01 e 02, sem nenhuma alteração de código entre os dois usos) |
 | `datasets/` | Dados fictícios (nunca reais/sensíveis) usados por mais de um template | Reservado — sem conteúdo ainda |
 | `schemas/` | Definições de schema (DDL) reaproveitadas entre templates | Reservado — sem conteúdo ainda (primeiro uso esperado a partir da Aula 03) |
 | `carga/` | Scripts de carga/seed de dados | Reservado — sem conteúdo ainda |

@@ -14,7 +14,11 @@ aceito aqui, porque o objetivo é prática, não seleção.
 
 A **Aula 01** (`templates/aula-01-modelagem-conceitual-mer/`) é o primeiro
 exemplo desse modelo: nota formativa de 0 a 10, calculada pela proporção de
-critérios estruturais atendidos, sem peso na nota final.
+critérios estruturais atendidos, sem peso na nota final. A **Aula 02**
+(`templates/aula-02-normalizacao-modelo-logico/`) segue o mesmo modelo,
+acrescentando dois critérios de "preenchimento mínimo" (não de conteúdo)
+para as duas análises escritas da atividade — ver "Limitações da correção
+automatizada" abaixo.
 
 ### 2. Atividades avaliativas de peso na nota (T1, P1, T2, P2, R)
 
@@ -61,7 +65,7 @@ antecipar uma atividade avaliativa de peso. Ver `docs/plano-de-atividades.md`.
 
 ## Limitações da correção automatizada
 
-O autograder desta aula (`shared/utilitarios/mer_mermaid.py` +
+O autograder dessas aulas (`shared/utilitarios/mer_mermaid.py` +
 `tests/regras_avaliacao.py` de cada template) verifica **estrutura**:
 existência de entidades, nomenclatura de PK/FK, cardinalidade e
 participação de relacionamentos. Ele explicitamente **não** valida:
@@ -70,10 +74,16 @@ participação de relacionamentos. Ele explicitamente **não** valida:
   corretas são aceitas);
 - a adequação semântica de uma escolha de modelagem que tem mais de uma
   resposta defensável (ex.: o tipo de restrição da hierarquia de
-  generalização na Parte 2 — o script só confere se o aluno *decidiu e
-  justificou*, não se a decisão é a "certa", porque nesse caso específico
-  mais de uma resposta é defensável dependendo da interpretação do
-  enunciado);
+  generalização na Parte 2 da Aula 01 — o script só confere se o aluno
+  *decidiu e justificou*, não se a decisão é a "certa", porque nesse caso
+  específico mais de uma resposta é defensável dependendo da interpretação
+  do enunciado);
+- o **conteúdo** de uma análise escrita — o mapeamento de dependências
+  funcionais (Aula 02, Parte 1a) e a justificativa da FK do relacionamento
+  1:1 (Aula 02, Parte 2) só têm o *preenchimento mínimo* checado
+  automaticamente (tamanho de texto acima de um limiar) — se a cadeia de
+  dependências está correta, ou se o argumento realmente aplica os
+  Critérios 1/2 da Seção 8.1, é avaliação manual do professor;
 - qualidade da escrita, clareza do diagrama, ou nomes de entidade/atributo
   que fujam ligeiramente da convenção mas sejam defensáveis.
 

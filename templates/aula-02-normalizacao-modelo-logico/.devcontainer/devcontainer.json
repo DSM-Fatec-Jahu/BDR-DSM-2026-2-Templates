@@ -1,0 +1,23 @@
+{
+  "name": "BDR — Aula 02 — Normalização e Modelo Lógico",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bierner.markdown-mermaid",
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+        "ms-python.python",
+        "yzhang.markdown-all-in-one"
+      ],
+      "settings": {
+        "markdown.preview.breaks": true
+      }
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/boas-vindas.sh",
+  "postAttachCommand": {
+    "abrir-readme": "code README.md || true"
+  }
+}
