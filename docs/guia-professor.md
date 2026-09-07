@@ -10,9 +10,13 @@ Atualizado incrementalmente a cada novo alvo processado.
 
 ```
 BDR-DSM-2026-2-Templates/
+├── .devcontainer/
+│   └── <nome-do-alvo>/            # ambiente Codespaces específico da atividade
+│       ├── devcontainer.json      # "name" aqui é o que aparece no seletor do GitHub
+│       ├── boas-vindas.sh
+│       └── docker-compose.yml     # só nos alvos com banco de dados real (Aula 03+)
 ├── templates/<nome-do-alvo>/
 │   ├── README.md                # contextualização, objetivos, entregável, critérios
-│   ├── .devcontainer/            # ambiente Codespaces específico da atividade
 │   ├── sql/                      # o que o aluno edita (nome mantido por convenção — ver nota abaixo)
 │   ├── tests/                    # script(s) de correção automática (rodam local e no Actions)
 │   ├── datasets/                 # dados de apoio, se a atividade precisar
@@ -37,6 +41,19 @@ BDR-DSM-2026-2-Templates/
 > aluno" por convenção. Cada template explica no seu próprio `README.md` o
 > que de fato vive ali.
 
+> 📌 **Nota sobre `.devcontainer/<nome-do-alvo>/` viver na raiz, não dentro
+> de `templates/<nome-do-alvo>/`:** o GitHub só oferece o seletor nativo
+> "qual configuração de Codespace usar" quando todas as configurações do
+> repositório vivem sob um único `.devcontainer/` na raiz, cada uma em sua
+> própria subpasta (`.devcontainer/<nome>/devcontainer.json`). Configs
+> espalhadas em subpastas do repositório (o layout antigo,
+> `templates/<alvo>/.devcontainer/`) não aparecem nesse seletor — o GitHub
+> simplesmente não as escaneia. Por isso todo novo alvo com ambiente próprio
+> precisa da config em `.devcontainer/<nome-do-alvo>/`, nunca dentro de
+> `templates/<nome-do-alvo>/`. Ver seção "Como usar Codespaces e Actions"
+> abaixo para o que cada `devcontainer.json` precisa declarar para abrir já
+> na pasta certa.
+
 ## Como adicionar uma nova atividade (novo alvo)
 
 Este repositório é alimentado **um alvo por vez**, nunca em lote — é a regra
@@ -48,21 +65,60 @@ para gerar este repositório). Para processar um novo alvo:
 2. O conteúdo de origem é lido em `BDR-DSM-2026-2` (mkdocs.yml + `docs/`),
    nunca alterado.
 3. Um novo `templates/<nome-do-alvo>/` é criado seguindo a estrutura acima.
-4. `docs/mapeamento.md` ganha uma nova entrada.
-5. Os sete documentos editoriais em `docs/` (este guia incluído) são
+4. Uma nova `.devcontainer/<nome-do-alvo>/` é criada **na raiz do
+   repositório** (nunca dentro de `templates/<nome-do-alvo>/`) — ver a nota
+   acima sobre por que o local importa. No mínimo:
+   - `devcontainer.json` com um `"name"` descritivo (é o texto que aparece
+     no seletor do GitHub) e `workspaceFolder` apontando para
+     `/workspace/templates/<nome-do-alvo>` — use `workspaceMount` (Aulas
+     01/02) se não precisar de banco, ou `dockerComposeFile` + `service`
+     (Aula 03+) se precisar. Isso garante que o Codespace já abre direto na
+     pasta do aluno, sem precisar de `cd` manual.
+   - `boas-vindas.sh`, referenciado em `postCreateCommand` por **caminho
+     absoluto** (`/workspace/.devcontainer/<nome-do-alvo>/boas-vindas.sh`) —
+     caminho relativo não funciona aqui porque o `postCreateCommand` roda
+     com `workspaceFolder` (a pasta do template) como diretório atual, não
+     a pasta do `.devcontainer`.
+   - `postAttachCommand` abrindo automaticamente `documentacao/enunciado.md`
+     e `README.md` (caminhos relativos a `workspaceFolder`, então já
+     resolvem certo) — é o que faz o enunciado aparecer sozinho assim que o
+     Codespace conecta, sem o aluno precisar procurar.
+5. `docs/mapeamento.md` ganha uma nova entrada.
+6. Os sete documentos editoriais em `docs/` (este guia incluído) são
    atualizados incrementalmente — nunca reescritos do zero.
-6. Se a atividade compartilhar dataset/schema/script com um template já
+7. Se a atividade compartilhar dataset/schema/script com um template já
    existente, o conteúdo comum vai para `shared/`, não é duplicado.
 
 ## Como usar Codespaces e Actions
 
-- Cada `templates/<alvo>/.devcontainer/devcontainer.json` é independente —
-  um aluno abre só a pasta do seu template e tudo que a atividade precisa já
-  vem configurado (banco de dados quando aplicável, extensões de VS Code,
-  mensagem de boas-vindas com os comandos básicos). A partir da Aula 03,
-  "banco de dados quando aplicável" passa a significar um `docker-compose.yml`
-  com um serviço MariaDB de verdade — ver `docs/decisoes-arquiteturais.md`,
-  seção Aula 03.
+- Cada `.devcontainer/<alvo>/devcontainer.json` é independente e vive na
+  raiz do repositório (não dentro de `templates/<alvo>/` — ver nota na
+  seção anterior). Como todas as configs ficam sob o mesmo `.devcontainer/`
+  raiz, o GitHub detecta que há mais de uma e, ao criar um Codespace, mostra
+  um seletor nativo com o `"name"` de cada `devcontainer.json` (ex.: "BDR —
+  Aula 01 — Modelagem Conceitual (MER)") — o aluno escolhe a aula
+  correspondente e tudo que a atividade precisa já vem configurado (banco de
+  dados quando aplicável, extensões de VS Code, mensagem de boas-vindas com
+  os comandos básicos). A partir da Aula 03, "banco de dados quando
+  aplicável" passa a significar um `docker-compose.yml` com um serviço
+  MariaDB de verdade — ver `docs/decisoes-arquiteturais.md`, seção Aula 03.
+- **Onde aparece esse seletor:** no repositório (ou fork), botão **Code →
+  aba Codespaces → "Create codespace on main"**. Se o botão rápido não
+  perguntar nada, use o menu **"..." → "New with options..."** — essa tela
+  tem um campo **Dev container configuration** listando as aulas
+  disponíveis pelo nome. Ela só existe porque os `devcontainer.json` estão
+  centralizados em `.devcontainer/` na raiz; se um novo alvo for criado no
+  layout antigo (`templates/<alvo>/.devcontainer/`), o seletor não vai
+  listá-lo.
+- **O que o aluno vê ao conectar:** cada `devcontainer.json` define
+  `workspaceFolder` apontando para `/workspace/templates/<alvo>/` (via
+  `workspaceMount` nos alvos sem banco, ou via o mount do
+  `docker-compose.yml` nos alvos com banco) — então o terminal e o
+  explorador de arquivos já abrem dentro da pasta certa, sem precisar de
+  `cd`. O `postAttachCommand` abre automaticamente `documentacao/enunciado.md`
+  e `README.md` assim que o editor conecta, então o enunciado completo da
+  atividade aparece sozinho, sem o aluno precisar procurar pela árvore de
+  pastas do repositório inteiro.
 - O autograding é um workflow reaproveitável
   (`.github/workflows/_autograding-reusable.yml`, `workflow_call`) chamado
   por um workflow fino por alvo (`autograding-<alvo>.yml`), que só declara o

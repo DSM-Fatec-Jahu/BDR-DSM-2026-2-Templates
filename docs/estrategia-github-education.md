@@ -19,7 +19,7 @@ acontece com ferramentas educacionais dedicadas.
 |---|---|
 | `BDR-DSM-2026-2` | Repositório de **conteúdo** — aulas publicadas via MkDocs. Autoridade pedagógica; nunca alterado por este projeto. |
 | `BDR-DSM-2026-2-Templates` (este repo) | Repositório de **prática** — um template por aula/atividade, público, aberto a fork livre. |
-| **Codespaces** | Ambiente de execução — cada template configura o que precisa (banco, extensões) via `.devcontainer`, sem instalação local. |
+| **Codespaces** | Ambiente de execução — cada template configura o que precisa (banco, extensões) via uma config própria em `.devcontainer/<alvo>/` na raiz do repositório, sem instalação local. O GitHub mostra um seletor nativo com o nome de cada aula ao criar o Codespace, porque todas as configs vivem sob o mesmo `.devcontainer/` raiz — ver `docs/guia-professor.md`. |
 | **GitHub Actions** | Motor de correção automática — roda no Pull Request do aluno, comenta e rotula, sem infraestrutura própria. |
 | `BDR-DSM-2026-2-Notas` (privado, externo a este repo) | Painel consolidado do professor — recebe só o resumo agregado (Fase 5B), nunca dados brutos de entrega. |
 

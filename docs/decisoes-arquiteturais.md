@@ -7,14 +7,71 @@ corrigir o raciocínio se discordar.
 
 ---
 
+## Migração — `.devcontainer` centralizado na raiz do repositório
+
+Decisão transversal, não ligada a um alvo específico — registrada aqui
+porque altera um padrão técnico usado por todos os templates já existentes.
+
+**Antes:** cada template trazia sua própria `templates/<alvo>/.devcontainer/`,
+colocalizada com o resto do material daquela aula (autocontida, fácil de
+entender lendo só aquela pasta).
+
+**Depois:** todas as configs vivem em `.devcontainer/<alvo>/` na raiz do
+repositório (`.devcontainer/aula-01-modelagem-conceitual-mer/`,
+`.devcontainer/aula-02-normalizacao-modelo-logico/`,
+`.devcontainer/aula-03-sql-ddl-estruturas/`).
+
+**Motivo:** o GitHub Codespaces só oferece o seletor nativo "qual
+configuração de ambiente usar" quando há mais de uma config e todas vivem
+sob um único `.devcontainer/` na raiz — ele não escaneia subpastas
+arbitrárias do repositório em busca de `devcontainer.json`. Com o layout
+antigo, criar um Codespace nunca perguntava qual aula, então não havia como
+um aluno abrir o ambiente certo pela interface do GitHub sem recorrer a um
+link manual com o parâmetro `devcontainer_path`. Centralizar em
+`.devcontainer/` resolve isso com um recurso nativo do GitHub, sem nenhuma
+solução alternativa.
+
+**O que isso exigiu tecnicamente**, além de mover os arquivos:
+
+- Aulas 01 e 02 (sem `docker-compose.yml`) ganharam `workspaceMount` +
+  `workspaceFolder` explícitos no `devcontainer.json`, replicando o
+  comportamento que a Aula 03 já tinha via o mount do compose — sem isso, o
+  Codespace abriria na raiz do repositório em vez de já cair dentro da
+  pasta do template, obrigando o aluno a um `cd` manual antes de rodar
+  `python tests/regras_avaliacao.py` (comando documentado em todo
+  `boas-vindas.sh` como se o diretório atual já fosse o do template).
+- O volume do `docker-compose.yml` da Aula 03 mudou de `../../..:/workspace`
+  para `../..:/workspace` — o arquivo passou a viver um nível mais raso
+  (`.devcontainer/aula-03-sql-ddl-estruturas/` em vez de
+  `templates/aula-03-sql-ddl-estruturas/.devcontainer/`).
+- Todo `postCreateCommand` que chamava `bash .devcontainer/boas-vindas.sh`
+  (caminho relativo, válido quando o `.devcontainer` era vizinho da pasta do
+  template) passou a usar caminho absoluto
+  (`/workspace/.devcontainer/<alvo>/boas-vindas.sh`), já que agora
+  `workspaceFolder` (o diretório atual desse comando) é a pasta do
+  template, não mais a pasta do `.devcontainer`.
+- Todo `postAttachCommand` ganhou uma segunda entrada abrindo
+  `documentacao/enunciado.md` automaticamente (além do `README.md` que já
+  abria), para que o enunciado apareça sozinho assim que o Codespace
+  conecta — antes, o aluno só via a menção a ele impressa no terminal pela
+  mensagem de boas-vindas.
+
+Nenhum destes ainda é usado por `_autograding-reusable.yml` nem pelo
+`paths` de disparo do autograding (`.github/workflows/autograding-<alvo>.yml`
+continua filtrando só `templates/<alvo>/**`) — o autograding roda em runner
+próprio do Actions, sem depender de qual `.devcontainer` o aluno usou
+localmente. Ver `docs/guia-professor.md`, seção "Como usar Codespaces e
+Actions", para o padrão que todo alvo novo deve seguir a partir de agora.
+
 ## Aula 01 — Modelagem Conceitual (MER)
 
 ### 1. Sem `.devcontainer` com MariaDB
 
 O padrão deste repositório é todo template trazer MariaDB via
 `docker-compose.yml` no `.devcontainer`. A Aula 01 **não segue esse
-padrão**: o `.devcontainer/devcontainer.json` do template sobe só uma
-imagem Python simples, sem nenhum serviço de banco de dados.
+padrão**: o `.devcontainer/aula-01-modelagem-conceitual-mer/devcontainer.json`
+do template sobe só uma imagem Python simples, sem nenhum serviço de banco
+de dados.
 
 **Motivo:** a Aula 01 é conceitual, anterior a qualquer SQL na disciplina —
 não existe nenhuma tabela real para criar, nenhuma query para rodar. Subir
@@ -130,9 +187,10 @@ abaixo).
 
 A Aula 02 continua anterior a qualquer SQL de verdade — o resultado da
 atividade é um modelo lógico em Mermaid, não uma tabela criada em banco.
-O `.devcontainer/devcontainer.json` deste template é praticamente idêntico
-ao da Aula 01 (mesma imagem Python, mesmas extensões de Mermaid). O padrão
-MariaDB só entra a partir da Aula 03 (DDL).
+O `.devcontainer/aula-02-normalizacao-modelo-logico/devcontainer.json`
+deste template é praticamente idêntico ao da Aula 01 (mesma imagem Python,
+mesmas extensões de Mermaid). O padrão MariaDB só entra a partir da Aula 03
+(DDL).
 
 ### 3. Dois cenários próprios (oficina mecânica, rede de hotéis), não os Checkpoints/Exercícios da aula original
 
@@ -180,17 +238,19 @@ gabarito pegou antes de chegar ao aluno.
 
 Como antecipado nas Decisões 1 (Aula 01) e 2 (Aula 02), o padrão MariaDB via
 `docker-compose.yml` volta a valer a partir daqui — é a primeira aula com
-SQL de verdade. O `.devcontainer` sobe dois serviços: `mariadb` (imagem
-oficial `mariadb:11.4`, a LTS mais recente disponível no momento do
-processamento) e `workspace` (a imagem Python já usada nos templates
-anteriores, para manter `python tests/regras_avaliacao.py` funcionando sem
-instalação adicional). O volume do repositório inteiro é montado em
-`/workspace` e `workspaceFolder` aponta para a subpasta deste template
-dentro desse mount — replica o mesmo comportamento efetivo do
-`devcontainer.json` simples (sem compose) das Aulas 01/02, em que o
-workspace "aberto" por padrão é a pasta do template, mas o restante do
-repositório (em especial `shared/`) continua acessível por caminho
-relativo, porque `tests/regras_avaliacao.py` depende disso.
+SQL de verdade. O `.devcontainer/aula-03-sql-ddl-estruturas/` sobe dois
+serviços: `mariadb` (imagem oficial `mariadb:11.4`, a LTS mais recente
+disponível no momento do processamento) e `workspace` (a imagem Python já
+usada nos templates anteriores, para manter `python
+tests/regras_avaliacao.py` funcionando sem instalação adicional). O volume
+do repositório inteiro é montado em `/workspace` e `workspaceFolder` aponta
+para a subpasta deste template dentro desse mount — replica o mesmo
+comportamento efetivo do `workspaceMount` usado nas Aulas 01/02 (ver
+"Migração — `.devcontainer` centralizado na raiz do repositório" no início
+deste documento), em que o workspace "aberto" por padrão é a pasta do
+template, mas o restante do repositório (em especial `shared/`) continua
+acessível por caminho relativo, porque `tests/regras_avaliacao.py` depende
+disso.
 
 ### 2. Usuário `aluno` recebe `GRANT ALL PRIVILEGES ON *.*`, não só sobre `atividade`
 
@@ -201,7 +261,7 @@ por seguir literalmente a Fase 4 do processo de geração deste repositório).
 Mas a Parte 1 desta atividade pede exatamente um `CREATE DATABASE` **novo**
 (`helpdesk_ti`), e o usuário `aluno` precisa conseguir criar (e recriar,
 idempotentemente) esse banco. A solução foi um script em
-`.devcontainer/init-db/00-privilegios.sql`, montado em
+`.devcontainer/aula-03-sql-ddl-estruturas/init-db/00-privilegios.sql`, montado em
 `/docker-entrypoint-initdb.d/` (mecanismo padrão da imagem oficial do
 MariaDB para rodar SQL na primeira inicialização), concedendo `GRANT ALL
 PRIVILEGES ON *.*` a `aluno`. O banco `atividade` continua existindo e

@@ -2,6 +2,14 @@
   "name": "BDR — Aula 02 — Normalização e Modelo Lógico",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
 
+  // Monta o repositório inteiro (necessário porque tests/regras_avaliacao.py
+  // importa de ../../../shared/), mas abre o editor e o terminal já dentro
+  // da pasta deste template — o aluno não precisa dar "cd" depois de entrar
+  // no Codespace. Mesmo padrão usado pela Aula 03 (ver docker-compose.yml
+  // de lá); aqui não há compose, então workspaceMount faz o mesmo papel.
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/workspace/templates/aula-02-normalizacao-modelo-logico",
+
   "customizations": {
     "vscode": {
       "extensions": [
@@ -16,8 +24,9 @@
     }
   },
 
-  "postCreateCommand": "bash .devcontainer/boas-vindas.sh",
+  "postCreateCommand": "bash /workspace/.devcontainer/aula-02-normalizacao-modelo-logico/boas-vindas.sh",
   "postAttachCommand": {
+    "abrir-enunciado": "code documentacao/enunciado.md || true",
     "abrir-readme": "code README.md || true"
   }
 }

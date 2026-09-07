@@ -33,15 +33,30 @@ automaticamente via **GitHub Actions** — sem depender do GitHub Classroom
 Clique em **Fork** no canto superior direito deste repositório, criando uma
 cópia na sua própria conta GitHub.
 
-### 2. Abrir o Codespace
+### 2. Abrir o Codespace da aula certa
 
-No **seu fork**, clique em **Code → Codespaces → Create codespace on main**.
-Aguarde o ambiente subir — cada template configura seu próprio
-`.devcontainer`, já com tudo que a atividade específica precisa (as
-credenciais de conexão de banco, quando a atividade usa um, aparecem na
-mensagem de boas-vindas do terminal). Uma alternativa ao Codespaces é clonar
-o fork localmente e abrir a pasta com a extensão **Dev Containers** do VS
-Code.
+No **seu fork**, clique em **Code → aba Codespaces → Create codespace on
+main**. Como este repositório tem mais de uma atividade, o GitHub pergunta
+**qual configuração de ambiente usar** — escolha pelo nome da aula (ex.:
+"BDR — Aula 03 — SQL e DDL: Definição de Estruturas"). Se esse botão não
+perguntar nada, use o menu **"..." → "New with options..."**, que tem um
+campo **Dev container configuration** com a lista completa.
+
+> ⚠️ Não use o botão de criação rápida se ele pular direto para a tela de
+> Region/Machine type sem perguntar a configuração — nesse caso ele vai
+> montar o ambiente errado. Prefira sempre passar por "New with options..."
+> na dúvida.
+
+Aguarde o ambiente subir. Ele já abre **direto dentro da pasta da aula
+escolhida** (sem precisar navegar pelo repositório) e, assim que o editor
+conecta, abre sozinho o `README.md` e o `documentacao/enunciado.md` daquela
+atividade — é ali que está o enunciado completo, não precisa procurar. A
+mensagem de boas-vindas no terminal reforça os comandos básicos e, quando a
+atividade usa banco de dados, as credenciais de conexão.
+
+Uma alternativa ao Codespaces é clonar o fork localmente e abrir a pasta
+com a extensão **Dev Containers** do VS Code — ao reabrir no container, ela
+também pergunta qual configuração usar quando há mais de uma.
 
 ### 3. Criar sua branch de entrega
 
@@ -109,12 +124,13 @@ peso na nota (T1, P1, T2, P2, R) seguem uma estratégia à parte — ver
 
 ```
 BDR-DSM-2026-2-Templates/
-├── templates/<nome-do-alvo>/   # um template por aula/atividade
-├── projetos/                   # templates de projetos integradores (quando existirem)
-├── shared/                     # datasets, schemas e utilitários reaproveitados entre templates
-├── docs/                       # documentação editorial (guia do professor, estratégias, decisões)
-├── scripts/                    # utilitários de manutenção do próprio repositório
-└── .github/                    # workflows de autograding e template de Pull Request
+├── .devcontainer/<nome-do-alvo>/  # ambiente Codespaces de cada aula (um por aula, na raiz)
+├── templates/<nome-do-alvo>/      # um template por aula/atividade
+├── projetos/                      # templates de projetos integradores (quando existirem)
+├── shared/                        # datasets, schemas e utilitários reaproveitados entre templates
+├── docs/                          # documentação editorial (guia do professor, estratégias, decisões)
+├── scripts/                       # utilitários de manutenção do próprio repositório
+└── .github/                       # workflows de autograding e template de Pull Request
 ```
 
 Documentação completa da arquitetura, de como adicionar uma nova atividade e

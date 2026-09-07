@@ -40,16 +40,22 @@ Ao concluir esta atividade você terá praticado:
 - Conta no GitHub, com fork deste repositório já criado (ver
   [README raiz](../../README.md) para o passo a passo completo de fork +
   Codespaces).
-- Nenhum software local é necessário — o ambiente todo roda pelo
-  Codespace configurado em `.devcontainer/`. Se preferir rodar localmente,
-  basta Python 3.10+ (só para rodar o autograder opcionalmente; nenhuma
-  dependência externa é instalada, o script usa apenas biblioteca padrão).
+- Nenhum software local é necessário — o ambiente todo roda pelo Codespace
+  configurado em [`.devcontainer/aula-02-normalizacao-modelo-logico/`](../../.devcontainer/aula-02-normalizacao-modelo-logico/)
+  (na raiz do repositório, não dentro desta pasta). Se preferir rodar
+  localmente, basta Python 3.10+ (só para rodar o autograder opcionalmente;
+  nenhuma dependência externa é instalada, o script usa apenas biblioteca
+  padrão).
 
 ## Como executar
 
-1. Abra esta pasta em um Codespace (botão **Code → Codespaces** no seu
-   fork, ou `code .` se estiver usando o VS Code local com a extensão Dev
-   Containers). A mensagem de boas-vindas explica os comandos básicos.
+1. No seu fork, clique em **Code → aba Codespaces → Create codespace on
+   main**. Como o repositório tem uma aula por configuração, o GitHub
+   pergunta qual usar — escolha **"BDR — Aula 02 — Normalização e Modelo
+   Lógico"** (se o botão não perguntar nada, use "..." → "New with
+   options..."). O Codespace já abre **direto nesta pasta**, com este
+   `README.md` e o `documentacao/enunciado.md` abertos automaticamente — não
+   precisa navegar pelo repositório.
 2. Edite [`sql/modelo-logico.md`](sql/modelo-logico.md) — é o único
    arquivo que você precisa alterar. O enunciado completo está em
    [`documentacao/enunciado.md`](documentacao/enunciado.md).

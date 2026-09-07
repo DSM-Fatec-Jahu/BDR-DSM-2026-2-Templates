@@ -31,8 +31,12 @@ services:
       # (import usado por tests/regras_avaliacao.py) exista dentro do
       # container. O devcontainer.json aponta workspaceFolder para a
       # subpasta deste template dentro desse mount, mantendo a mesma
-      # experiência "abra só a pasta do seu alvo" das Aulas 01 e 02.
-      - ../../..:/workspace:cached
+      # experiência "abra já dentro da pasta do seu alvo" das Aulas 01 e 02
+      # (workspaceMount, já que elas não usam docker-compose). Caminho
+      # relativo `../..` porque este arquivo vive em
+      # `.devcontainer/aula-03-sql-ddl-estruturas/` na raiz do repositório —
+      # dois níveis acima é a raiz.
+      - ../..:/workspace:cached
     command: sleep infinity
     depends_on:
       mariadb:

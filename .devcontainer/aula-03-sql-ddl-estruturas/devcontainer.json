@@ -4,9 +4,12 @@
   "service": "workspace",
   "workspaceFolder": "/workspace/templates/aula-03-sql-ddl-estruturas",
 
-  "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {}
-  },
+  // A feature "common-utils" foi removida: a imagem
+  // mcr.microsoft.com/devcontainers/python já aplica esse mesmo tratamento
+  // (usuário non-root, sudo, git) na própria construção da imagem, então a
+  // feature era redundante — e o `apt-get update` que ela roda vinha
+  // falhando por causa de um repositório do Yarn pré-configurado na variante
+  // bullseye da imagem, sem chave GPG válida (NO_PUBKEY 62D54FD4003F6525).
 
   "customizations": {
     "vscode": {
@@ -18,8 +21,9 @@
     }
   },
 
-  "postCreateCommand": "bash .devcontainer/boas-vindas.sh",
+  "postCreateCommand": "bash /workspace/.devcontainer/aula-03-sql-ddl-estruturas/boas-vindas.sh",
   "postAttachCommand": {
+    "abrir-enunciado": "code documentacao/enunciado.md || true",
     "abrir-readme": "code README.md || true"
   }
 }

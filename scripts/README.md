@@ -8,9 +8,11 @@ Nenhum script de manutenção foi necessário ainda (repositório com um único
 template). Candidatos naturais para o futuro, conforme o número de
 templates crescer:
 
-- Um script que valide, para todo `templates/*/`, que a estrutura mínima
-  obrigatória existe (`README.md`, `.devcontainer/`, `sql/`, `tests/`,
-  `datasets/`, `documentacao/`) — útil como *lint* antes de publicar um
-  novo alvo.
+- Um script que valide, para todo `templates/<alvo>/`, que a estrutura
+  mínima obrigatória existe (`README.md`, `sql/`, `tests/`, `datasets/`,
+  `documentacao/`) **e** que existe uma `.devcontainer/<alvo>/` correspondente
+  na raiz do repositório (não dentro de `templates/<alvo>/` — ver
+  `docs/guia-professor.md`) — útil como *lint* antes de publicar um novo
+  alvo.
 - Um script que gere o esqueleto de um novo `templates/<nome-do-alvo>/`
   seguindo a estrutura padrão automaticamente.

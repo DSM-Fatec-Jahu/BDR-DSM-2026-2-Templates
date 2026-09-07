@@ -39,17 +39,23 @@ Ao concluir esta atividade você terá praticado:
 - Conta no GitHub, com fork deste repositório já criado (ver
   [README raiz](../../README.md) para o passo a passo completo de fork +
   Codespaces).
-- Um Codespace (ou Dev Container local) usando o `.devcontainer/` desta
-  pasta — ele já sobe um MariaDB 11.4 num container próprio, sem nenhuma
-  instalação manual. Se preferir rodar 100% localmente sem Codespaces, você
-  precisa de um MariaDB/MySQL acessível (ex.: XAMPP, como em sala) e do
-  cliente `mysql` no PATH.
+- Um Codespace (ou Dev Container local) usando
+  [`.devcontainer/aula-03-sql-ddl-estruturas/`](../../.devcontainer/aula-03-sql-ddl-estruturas/)
+  (na raiz do repositório, não dentro desta pasta) — ele já sobe um MariaDB
+  11.4 num container próprio, sem nenhuma instalação manual. Se preferir
+  rodar 100% localmente sem Codespaces, você precisa de um MariaDB/MySQL
+  acessível (ex.: XAMPP, como em sala) e do cliente `mysql` no PATH.
 
 ## Como executar
 
-1. Abra esta pasta em um Codespace (botão **Code → Codespaces** no seu
-   fork). A mensagem de boas-vindas explica os comandos básicos e as
-   credenciais de conexão do MariaDB.
+1. No seu fork, clique em **Code → aba Codespaces → Create codespace on
+   main**. Como o repositório tem uma aula por configuração, o GitHub
+   pergunta qual usar — escolha **"BDR — Aula 03 — SQL e DDL: Definição de
+   Estruturas"** (se o botão não perguntar nada, use "..." → "New with
+   options..."). O Codespace já abre **direto nesta pasta**, com este
+   `README.md` e o `documentacao/enunciado.md` abertos automaticamente — não
+   precisa navegar pelo repositório. A mensagem de boas-vindas no terminal
+   explica os comandos básicos e as credenciais de conexão do MariaDB.
 2. Edite [`sql/helpdesk.sql`](sql/helpdesk.sql) — é o único arquivo que
    você precisa alterar. O enunciado completo está em
    [`documentacao/enunciado.md`](documentacao/enunciado.md).
