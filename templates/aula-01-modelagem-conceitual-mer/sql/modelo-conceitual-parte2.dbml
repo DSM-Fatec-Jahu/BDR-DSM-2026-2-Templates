@@ -1,0 +1,26 @@
+// Aula 01 — Modelagem Conceitual (MER) — Parte 2: Generalização de Pessoas
+//
+// Mesmo fluxo da Parte 1: cole em https://dbdiagram.io para visualizar, edite
+// aqui o que vale como entrega. Consulte ../documentacao/enunciado.md.
+//
+// TODO: troque o esqueleto abaixo pelo seu modelo completo. `pessoas` é a
+// superclasse; `alunos`, `professores` e `funcionarios_administrativos` são
+// subclasses (Estratégia 2, Seção 8.7 da aula — cada subclasse tem PK
+// própria que também é FK única para a superclasse, mesmo valor de id_pessoa).
+
+Table pessoas {
+  id_pessoa bigint [pk]
+  nome varchar
+}
+
+// TODO: adicione "Table alunos { ... }", "Table professores { ... }" e
+// "Table funcionarios_administrativos { ... }" — cada uma com id_pessoa
+// [pk] (é PK própria E FK para pessoas ao mesmo tempo) e ao menos um
+// atributo exclusivo da subclasse.
+
+// TODO: adicione um "Ref:" um-para-um ("-") entre pessoas e cada subclasse,
+// ex.: Ref: alunos.id_pessoa - pessoas.id_pessoa
+
+// Depois de montar o diagrama, preencha o campo "Restrição da hierarquia"
+// em modelo-conceitual.md (Obrigatoriedade, Exclusividade, Justificativa) —
+// não dá para expressar isso em DBML, então essa parte é só texto.

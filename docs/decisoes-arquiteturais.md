@@ -81,17 +81,42 @@ importante, incoerente com "fidelidade ao plano de ensino": a sala de aula
 real da Aula 01 também não usa banco de dados nenhum, é modelagem em
 diagrama. A partir da Aula 03 (DDL), o padrão MariaDB volta a valer.
 
-### 2. Entrega em Markdown + Mermaid, não em `.sql` ou `.dbml`
+### 2. Entrega em `.dbml` (dbdiagram.io), não mais em Mermaid — revisto 2026-09-07
 
-A entrega (`sql/modelo-conceitual.md`) é um arquivo Markdown com blocos
-` ```mermaid erDiagram ` — não um arquivo `.sql` (não existe SQL ainda) nem
-`.dbml` (formato usado depois, na `Pratica_Modelagem_dbdiagram.md`, mas que
-exige conta em dbdiagram.io para visualizar). Mermaid renderiza nativamente
-tanto no preview do VS Code (com a extensão instalada no devcontainer)
-quanto na própria interface do GitHub ao visualizar o arquivo — nenhuma
-ferramenta externa, nenhuma conta necessária. É também a notação e a
-sintaxe exatas já usadas em todos os exemplos da Aula 01, reduzindo a
-distância entre "o que o aluno leu" e "o que o aluno precisa produzir".
+**Original:** a entrega era um único `sql/modelo-conceitual.md` com blocos
+` ```mermaid erDiagram `, validados por um parser regex próprio
+(`shared/utilitarios/mer_mermaid.py`). Motivo original: Mermaid renderiza
+nativamente no preview do VS Code e no GitHub, sem conta nem ferramenta
+externa.
+
+**Revisto a pedido do professor:** a entrega passou a ser DBML — a
+linguagem por trás do [dbdiagram.io](https://dbdiagram.io), a mesma
+ferramenta já usada mais adiante no curso (`Pratica_Modelagem_dbdiagram.md`)
+— para dar ao aluno contato com uma ferramenta de mercado desde a primeira
+atividade, não só com uma notação de texto que só existe dentro deste
+repositório. Cada parte agora é um arquivo `.dbml` próprio
+(`sql/modelo-conceitual-parte1.dbml`, `-parte2.dbml`), colável direto no
+site para visualizar/exportar; `sql/modelo-conceitual.md` ficou só com o
+campo de texto da restrição da hierarquia. O parser
+`shared/utilitarios/mer_mermaid.py` foi substituído por
+`shared/utilitarios/mer_dbml.py` (mesma API de `checar_*`/`Criterio`, ver
+seção "Aula 02" abaixo).
+
+**Limitação técnica encontrada e como foi resolvida:** DBML (assim como SQL
+de verdade) só consegue expressar formalmente a participação de quem
+*guarda* a chave estrangeira, via `not null` na coluna — não existe forma de
+expressar "nem toda linha do lado 'um' tem uma linha correspondente do lado
+'muitos'" como constraint de schema (isso é regra de negócio). O parser de
+Mermaid antigo conseguia ler essa informação porque ela não passava de uma
+anotação livre de desenho (o símbolo Crow's Foot escolhido pelo aluno), não
+algo garantido pela estrutura. Optei por **não simular isso com uma sintaxe
+inventada** (ex.: um comentário mágico `// parcial`) para não ensinar algo
+que não é DBML de verdade — em vez disso, os critérios de participação do
+lado "um" (ex.: "nem todo hóspede tem cartão", Aula 02 Parte 2; participação
+das subclasses na Aula 01 Parte 2) foram removidos do autograder do diagrama
+e dependem só do campo de texto livre já existente para essa decisão
+(Obrigatoriedade/Justificativa), que já era revisado manualmente pelo
+professor mesmo antes desta mudança.
 
 ### 3. Escolha dos Exercícios de Fixação 1 e 4 como base da atividade (não os Checkpoints)
 
@@ -168,29 +193,26 @@ configurado (ver `docs/guia-professor.md`, seção de configuração manual).
 
 ## Aula 02 — Normalização e Modelo Lógico
 
-### 1. Reaproveitamento integral do `shared/utilitarios/mer_mermaid.py`, sem nenhuma alteração no parser
+### 1. Reaproveitamento integral do parser compartilhado, sem nenhuma alteração de código
 
 O roadmap traçado ao processar a Aula 01 (`docs/relatorio-executivo.md`)
 previa a Aula 02 como "primeiro uso real" do parser compartilhado por um
 segundo template, para validar se ele se sustentava fora do caso original.
-Confirmado: o parser de `erDiagram` foi usado sem nenhuma mudança de
-código — as únicas adições feitas para a Aula 02 foram no roteiro de
-critérios (`tests/regras_avaliacao.py` deste template), não no parser em
-si. O único ponto de atenção foi a semântica dos tokens de cardinalidade
-Crow's Foot (`_TOKENS` em `mer_mermaid.py`): o token adjacente ao *nome* de
-uma entidade no texto do diagrama determina a participação **dessa mesma**
-entidade (não da outra ponta do relacionamento) — confirmado testando o
-gabarito deste template contra o autograder antes de publicar (ver Seção 4
-abaixo).
+Confirmado — inicialmente com `mer_mermaid.py`, e o mesmo continuou
+verdadeiro após a migração para DBML (`shared/utilitarios/mer_dbml.py`,
+ver Decisão 2 da Aula 01): as únicas adições feitas para a Aula 02 foram no
+roteiro de critérios (`tests/regras_avaliacao.py` deste template), não no
+parser em si — `checar_entidade`, `checar_pk`, `checar_fk`,
+`checar_relacionamento` etc. são genéricos o bastante para qualquer schema.
 
 ### 2. Sem `.devcontainer` com MariaDB, mesmo motivo da Aula 01
 
 A Aula 02 continua anterior a qualquer SQL de verdade — o resultado da
-atividade é um modelo lógico em Mermaid, não uma tabela criada em banco.
+atividade é um modelo lógico em DBML, não uma tabela criada em banco.
 O `.devcontainer/aula-02-normalizacao-modelo-logico/devcontainer.json`
 deste template é praticamente idêntico ao da Aula 01 (mesma imagem Python,
-mesmas extensões de Mermaid). O padrão MariaDB só entra a partir da Aula 03
-(DDL).
+mesma extensão de preview DBML). O padrão MariaDB só entra a partir da
+Aula 03 (DDL).
 
 ### 3. Dois cenários próprios (oficina mecânica, rede de hotéis), não os Checkpoints/Exercícios da aula original
 

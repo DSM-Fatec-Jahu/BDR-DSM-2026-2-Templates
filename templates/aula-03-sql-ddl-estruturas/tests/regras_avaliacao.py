@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Autograding da Aula 03 — SQL e DDL: Definição de Estruturas.
 
-Diferente das Aulas 01 e 02 (que validam um `.md` com Mermaid via regex),
+Diferente das Aulas 01 e 02 (que validam arquivos `.dbml` via parser próprio),
 esta é a primeira atividade com SQL de verdade: o script entregue
 (`sql/helpdesk.sql`) é EXECUTADO contra um MariaDB descartável, e a correção
 confere a **estrutura resultante** via `INFORMATION_SCHEMA` — nunca o texto

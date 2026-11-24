@@ -17,15 +17,26 @@ Como na Aula 01, esta atividade já é sobre **modelo lógico** — toda chave
 primária segue `id_` + tabela no singular (Regra 5) e toda chave estrangeira
 segue tabela-referenciada-no-singular + `_id` (Regra 6), exatamente como a
 Seção 8 da aula formaliza. Ainda não existe SQL de verdade (isso começa na
-Aula 03) — a entrega continua em Mermaid `erDiagram`, mas agora representando
-tabelas já no modelo lógico, não mais entidades conceituais.
+Aula 03) — a entrega continua em DBML (a linguagem por trás do
+[dbdiagram.io](https://dbdiagram.io)), mas agora representando tabelas já no
+modelo lógico, não mais entidades conceituais.
 
 ## O que entregar
 
-Edite **[`sql/modelo-logico.md`](../sql/modelo-logico.md)** — ele já tem a
-estrutura das duas partes abaixo, com um esqueleto mínimo em cada bloco
-`mermaid` e campos de texto para as análises escritas. Substitua os
-esqueletos e preencha os campos.
+Três arquivos, todos dentro de `sql/`:
+
+- **[`modelo-logico-parte1.dbml`](../sql/modelo-logico-parte1.dbml)** — o
+  modelo final (item b) da Oficina Mecânica
+- **[`modelo-logico-parte2.dbml`](../sql/modelo-logico-parte2.dbml)** — o
+  modelo da Rede de Hotéis
+- **[`modelo-logico.md`](../sql/modelo-logico.md)** — o mapeamento de
+  dependências funcionais (item a) e a justificativa da FK 1:1, que não dá
+  para representar em DBML
+
+Os três já vêm com um esqueleto mínimo — substitua pelo seu conteúdo
+completo. Para visualizar um `.dbml` enquanto edita, cole o conteúdo em
+[dbdiagram.io](https://dbdiagram.io) (New Diagram → editor à esquerda, sem
+precisar de conta) — o que vale como entrega é o arquivo no seu fork.
 
 ### Parte 1 — Normalização até a 3FN — Oficina Mecânica
 
@@ -52,12 +63,13 @@ depende *dela*, não diretamente de `id_ordem`; o mesmo vale para
 `cliente_cpf` e para `mecanico_matricula`).
 
 **b) Aplique 1FN → 2FN → 3FN** e entregue o modelo lógico final (tabelas,
-PKs, FKs) como um `erDiagram`. Sua entrega precisa conter, no mínimo, seis
-tabelas: `CLIENTES`, `VEICULOS`, `MECANICOS`, `SERVICOS`, `ORDENS_SERVICO` e
-`ITENS_ORDEM_SERVICO`. Lembre-se: **toda PK criada por você é `id_tabela`**
-(Regra 5, Seção 8.6 da aula) — `placa_veiculo`, `cliente_cpf` e
-`mecanico_matricula` continuam existindo nas tabelas correspondentes, mas
-como atributos comuns (com `UNIQUE`), não como chave primária.
+PKs, FKs) em DBML (`modelo-logico-parte1.dbml`). Sua entrega precisa conter,
+no mínimo, seis tabelas: `clientes`, `veiculos`, `mecanicos`, `servicos`,
+`ordens_servico` e `itens_ordem_servico`. Lembre-se: **toda PK criada por
+você é `id_tabela`** (Regra 5, Seção 8.6 da aula) — `placa_veiculo`,
+`cliente_cpf` e `mecanico_matricula` continuam existindo nas tabelas
+correspondentes, mas como atributos comuns marcados `[unique]`, não como
+chave primária.
 
 ### Parte 2 — Passagem ao Modelo Lógico — Rede de Hotéis
 
@@ -80,35 +92,42 @@ Uma rede de hotéis tem o seguinte MER conceitual:
   da reserva à qual pertence (representa o valor cobrado em cada noite de
   uma estadia).
 
-Escreva o modelo lógico completo (tabelas, colunas, PKs e FKs) aplicando as
-regras de passagem da Seção 8 da aula a cada um dos quatro relacionamentos
-acima, como um `erDiagram`. Depois, preencha o campo de justificativa
-pedido no arquivo de entrega, explicando **em qual tabela você colocou a FK
-do relacionamento 1:1** (Hóspedes × Cartões_Fidelidade) e por quê — reveja
-o Critério 1 e o Critério 2 da Seção 8.1 antes de responder.
+Escreva o modelo lógico completo (tabelas, colunas, PKs e FKs) em DBML
+(`modelo-logico-parte2.dbml`), aplicando as regras de passagem da Seção 8
+da aula a cada um dos quatro relacionamentos acima. Depois, preencha o
+campo de justificativa pedido em `modelo-logico.md`, explicando **em qual
+tabela você colocou a FK do relacionamento 1:1** (Hóspedes ×
+Cartões_Fidelidade) e por quê — reveja o Critério 1 e o Critério 2 da Seção
+8.1 antes de responder.
 
 ## Critérios de avaliação
 
 A correção automática (veja `tests/regras_avaliacao.py`, disparada pelo
 Pull Request) confere **estrutura**, não redação exata:
 
-- Existência de cada entidade exigida em ambas as partes;
+- Existência de cada tabela exigida em ambas as partes;
 - Nomenclatura de chave primária (`id_` + tabela no singular — Regra 5) e
   chave estrangeira (tabela referenciada no singular + `_id` — Regra 6);
-- Cardinalidade correta de cada relacionamento (1:1, 1:N ou N:M) e
-  participação correta (total/parcial) onde isso é pedido explicitamente
-  (Parte 2 — Hóspedes × Cartões_Fidelidade);
+- Cardinalidade correta de cada relacionamento (1:1, 1:N ou N:M) e, onde é
+  representável (a coluna FK é `not null` ou não), participação correta —
+  isso cobre Reservas (total) e Cartões_Fidelidade (total), mas **não** a
+  participação parcial de Hóspedes: DBML não tem como expressar "nem toda
+  linha do lado 'um' tem uma linha correspondente do lado 'muitos'" como
+  constraint de schema, então essa parte só é conferida na justificativa
+  escrita;
 - Presença e tamanho mínimo do mapeamento de dependências funcionais
   (Parte 1a) e da justificativa da FK do 1:1 (Parte 2) — a **qualidade**
   da análise escrita é revisada manualmente pelo professor, o script só
   confere se você de fato escreveu algo substancial, não se está "certo".
 
-O rótulo (verbo) que você escolhe para cada relacionamento **não** é
-validado automaticamente — escolha o que descreve melhor o negócio.
+O comentário (`//`) que você escolhe para cada `Ref:` **não** é validado
+automaticamente — use-o como quiser para documentar a relação.
 
 ## Como entregar
 
-1. Edite `sql/modelo-logico.md` dentro do seu fork.
+1. Edite os três arquivos (`sql/modelo-logico-parte1.dbml`,
+   `sql/modelo-logico-parte2.dbml`, `sql/modelo-logico.md`) dentro do seu
+   fork.
 2. (Opcional, mas recomendado) rode `python tests/regras_avaliacao.py`
    dentro da pasta deste template para conferir sua entrega antes de
    enviar.

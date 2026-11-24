@@ -8,26 +8,28 @@ cat <<'EOF'
 ================================================================
 
 Esta aula é 100% conceitual (anterior a SQL) — por isso este
-ambiente NÃO sobe nenhum banco de dados. Você vai editar diagramas
-Mermaid dentro de arquivos Markdown.
+ambiente NÃO sobe nenhum banco de dados. Você vai editar modelos em
+DBML, a linguagem por trás do dbdiagram.io.
 
 Onde trabalhar:
-  sql/modelo-conceitual.md   <- sua entrega (edite este arquivo)
-  documentacao/enunciado.md  <- enunciado completo da atividade
+  sql/modelo-conceitual-parte1.dbml   <- sua entrega (Parte 1)
+  sql/modelo-conceitual-parte2.dbml   <- sua entrega (Parte 2)
+  sql/modelo-conceitual.md            <- sua entrega (texto da Parte 2)
+  documentacao/enunciado.md           <- enunciado completo da atividade
 
 Como visualizar seu diagrama enquanto edita:
-  1. Abra sql/modelo-conceitual.md
-  2. Ctrl+Shift+V (ou Cmd+Shift+V no Mac) abre a pré-visualização
-     Markdown, que já renderiza os blocos ```mermaid``` graças à
-     extensão "Markdown Preview Mermaid Support".
-  GitHub também renderiza Mermaid automaticamente ao visualizar o
-  arquivo pelo navegador — útil para conferir antes do PR.
+  1. Abra um arquivo .dbml — a extensão "dbdiagram" já dá highlight
+     de sintaxe e um preview de ERD dentro do próprio VS Code.
+  2. Ou cole o conteúdo do arquivo em https://dbdiagram.io (New
+     Diagram > editor à esquerda) para visualizar e exportar a
+     imagem — não precisa de conta. O que vale como entrega é o
+     arquivo .dbml no seu fork, não o que fica salvo no site.
 
 Como conferir sua entrega antes de abrir o Pull Request:
   python tests/regras_avaliacao.py
 
 Como entregar:
-  1. git add sql/modelo-conceitual.md
+  1. git add sql/modelo-conceitual-parte1.dbml sql/modelo-conceitual-parte2.dbml sql/modelo-conceitual.md
   2. git commit -m "Entrega Aula 01"
   3. git push origin entrega/<SEU-RA>-<seu-usuario-github>
   4. Abra um Pull Request no GitHub, do seu fork para o repositório

@@ -1,0 +1,23 @@
+// Aula 02 — Normalização e Modelo Lógico — Parte 1b: Modelo lógico (3FN) — Oficina Mecânica
+//
+// Escreva aqui o modelo final em DBML. Cole em https://dbdiagram.io para
+// visualizar enquanto edita; o que vale como entrega é este arquivo no seu
+// fork. Antes de montar o diagrama, faça o mapeamento de dependências
+// funcionais (item a) em ../sql/modelo-logico.md.
+//
+// Consulte o enunciado completo em ../documentacao/enunciado.md.
+//
+// TODO: troque o esqueleto abaixo pelo seu modelo final em 3FN. Sua entrega
+// precisa conter, no mínimo, clientes, veiculos, mecanicos, servicos,
+// ordens_servico e itens_ordem_servico, com PK/FK corretas e cardinalidades
+// certas. Lembre-se: toda PK é id_tabela (Regra 5); mantenha placa/cpf/
+// matricula como atributos comuns ([unique]), não como chave primária.
+
+Table clientes {
+  id_cliente bigint [pk]
+  nome varchar
+}
+
+// TODO: adicione veiculos, mecanicos, servicos, ordens_servico e
+// itens_ordem_servico (esta última com PK composta: dois "[pk]"), e um
+// "Ref:" para cada relacionamento 1:N.

@@ -13,8 +13,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "bierner.markdown-mermaid",
-        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+        "dbdiagram.dbdiagram-vscode",
         "ms-python.python",
         "yzhang.markdown-all-in-one"
       ],

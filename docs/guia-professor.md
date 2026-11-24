@@ -35,8 +35,9 @@ BDR-DSM-2026-2-Templates/
 
 > 📌 **Nota sobre a pasta `sql/`:** o nome é mantido em todo template, mesmo
 > quando a atividade é puramente conceitual e não produz nenhum arquivo
-> `.sql` de verdade (caso da Aula 01, que entrega um `.md` com diagramas
-> Mermaid). Isso mantém a navegação previsível entre templates e simplifica
+> `.sql` de verdade (caso da Aula 01, que entrega arquivos `.dbml` e um
+> `.md` com o texto da restrição da hierarquia). Isso mantém a navegação
+> previsível entre templates e simplifica
 > qualquer automação futura que precise localizar "a pasta de trabalho do
 > aluno" por convenção. Cada template explica no seu próprio `README.md` o
 > que de fato vive ali.
@@ -163,9 +164,9 @@ O template referencia o conteúdo de `shared/` por caminho relativo
 Cada template tem seu próprio script em `tests/`, que define as regras de
 correção daquele alvo especificamente (por exemplo,
 `templates/aula-01-modelagem-conceitual-mer/tests/regras_avaliacao.py`).
-Templates baseados em diagramas Mermaid reaproveitam o parser/validador
-genérico em `shared/utilitarios/mer_mermaid.py`; templates com SQL de
-verdade (Aula 03 em diante) reaproveitam `shared/utilitarios/mariadb_ddl.py`
+Templates baseados em diagramas DBML (dbdiagram.io) reaproveitam o
+parser/validador genérico em `shared/utilitarios/mer_dbml.py`; templates com
+SQL de verdade (Aula 03 em diante) reaproveitam `shared/utilitarios/mariadb_ddl.py`
 (executa o script do aluno e introspecciona `INFORMATION_SCHEMA`). Ambos
 compartilham o formato de relatório de `shared/utilitarios/avaliacao.py`
 (`Criterio`, `montar_relatorio`, `relatorio_para_markdown`). Para mudar um
@@ -178,7 +179,9 @@ Para rodar a correção manualmente (fora do Actions), de dentro da pasta do
 template:
 
 ```bash
-# Templates baseados em Mermaid (Aulas 01/02):
+# Templates baseados em DBML (Aulas 01/02) — --entrega aponta para o .md
+# de texto; os .dbml de cada parte são derivados automaticamente do mesmo
+# nome-base (<gabarito>-parte1.dbml / -parte2.dbml, na mesma pasta):
 python tests/regras_avaliacao.py --entrega solucao-professor/<gabarito>.md
 
 # Templates com SQL de verdade (Aula 03+) — aponte para um MariaDB

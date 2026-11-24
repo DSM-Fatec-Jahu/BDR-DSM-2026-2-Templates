@@ -72,10 +72,12 @@ antecipar uma atividade avaliativa de peso. Ver `docs/plano-de-atividades.md`.
 
 ## Limitações da correção automatizada
 
-O autograder das Aulas 01/02 (`shared/utilitarios/mer_mermaid.py` +
+O autograder das Aulas 01/02 (`shared/utilitarios/mer_dbml.py` +
 `tests/regras_avaliacao.py` de cada template) verifica **estrutura**:
-existência de entidades, nomenclatura de PK/FK, cardinalidade e
-participação de relacionamentos. Ele explicitamente **não** valida:
+existência de tabelas, nomenclatura de PK/FK, cardinalidade e participação
+de relacionamentos (onde ela é representável em DBML — ver Decisão 2 da
+Aula 01 em `docs/decisoes-arquiteturais.md`). Ele explicitamente **não**
+valida:
 
 - o rótulo/verbo escolhido para um relacionamento (múltiplas redações
   corretas são aceitas);

@@ -12,9 +12,9 @@ Esta é a primeira atividade prática do semestre, ligada à Aula 01. Antes de
 qualquer linha de SQL, a disciplina começa pela **modelagem conceitual**: a
 etapa de representar o mundo real através de um Modelo
 Entidade-Relacionamento (MER), independente de SGBD. Você vai treinar
-exatamente isso aqui, usando a notação Crow's Foot em diagramas Mermaid
-`erDiagram` — a mesma notação usada na aula e a mesma que ferramentas de
-mercado como dbdiagram.io e MySQL Workbench usam.
+exatamente isso aqui, escrevendo o modelo em DBML — a linguagem por trás do
+[dbdiagram.io](https://dbdiagram.io), uma ferramenta real de mercado — que
+renderiza a mesma notação Crow's Foot usada na aula.
 
 ## Objetivos e competências
 
@@ -53,12 +53,15 @@ Ao concluir esta atividade você terá praticado:
    options..."). O Codespace já abre **direto nesta pasta**, com este
    `README.md` e o `documentacao/enunciado.md` abertos automaticamente — não
    precisa navegar pelo repositório.
-2. Edite [`sql/modelo-conceitual.md`](sql/modelo-conceitual.md) — é o único
-   arquivo que você precisa alterar. O enunciado completo está em
+2. Edite [`sql/modelo-conceitual-parte1.dbml`](sql/modelo-conceitual-parte1.dbml),
+   [`sql/modelo-conceitual-parte2.dbml`](sql/modelo-conceitual-parte2.dbml) e
+   [`sql/modelo-conceitual.md`](sql/modelo-conceitual.md) — são os três
+   arquivos que você precisa alterar. O enunciado completo está em
    [`documentacao/enunciado.md`](documentacao/enunciado.md).
-3. Visualize seu diagrama com `Ctrl+Shift+V` (preview Markdown) enquanto
-   edita, ou olhando o arquivo pela interface do GitHub (que também
-   renderiza Mermaid nativamente).
+3. Visualize seu diagrama colando o conteúdo de cada `.dbml` em
+   [dbdiagram.io](https://dbdiagram.io) (New Diagram → cole no editor à
+   esquerda) — não precisa de conta para isso. O que vale como entrega é o
+   arquivo `.dbml` no seu fork.
 4. Antes de entregar, rode a correção localmente para conferir sua nota
    formativa:
 
@@ -68,16 +71,18 @@ Ao concluir esta atividade você terá praticado:
 
 ## Entregável
 
-Só o arquivo `sql/modelo-conceitual.md`, com as duas partes preenchidas
-(Clínica Médica e Generalização de Pessoas).
+Os três arquivos em `sql/`: `modelo-conceitual-parte1.dbml` (Clínica
+Médica), `modelo-conceitual-parte2.dbml` (Generalização de Pessoas) e
+`modelo-conceitual.md` (campo de texto da restrição da hierarquia).
 
 ## Critérios de avaliação e correção automática
 
 A correção automática roda no Pull Request e confere **estrutura**, não
-texto exato: existência das entidades exigidas, nomenclatura de PK/FK
-(Regras 5 e 6 da disciplina), cardinalidade e participação de cada
-relacionamento. O rótulo do relacionamento (o verbo) não é validado — só a
-estrutura importa. Detalhes completos em
+texto exato: existência das tabelas exigidas, nomenclatura de PK/FK (Regras
+5 e 6 da disciplina) e cardinalidade de cada relacionamento. A participação
+da hierarquia da Parte 2 não é uma constraint de schema representável em
+DBML, então é conferida só no campo de texto. O comentário (`//`) de cada
+`Ref:` não é validado — só a estrutura importa. Detalhes completos em
 [`documentacao/enunciado.md`](documentacao/enunciado.md#critérios-de-avaliação).
 
 O resultado aparece automaticamente como **comentário no seu Pull Request**

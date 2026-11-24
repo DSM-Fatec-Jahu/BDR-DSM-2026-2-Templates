@@ -9,26 +9,27 @@ cat <<'EOF'
 
 Esta aula ainda é anterior a SQL de verdade (isso só começa na
 Aula 03, DDL) — por isso este ambiente NÃO sobe nenhum banco de
-dados. Você vai editar diagramas Mermaid dentro de um arquivo
-Markdown, representando tabelas já no modelo lógico (com PK/FK).
+dados. Você vai editar modelos em DBML, representando tabelas já
+no modelo lógico (com PK/FK).
 
 Onde trabalhar:
-  sql/modelo-logico.md       <- sua entrega (edite este arquivo)
-  documentacao/enunciado.md  <- enunciado completo da atividade
+  sql/modelo-logico-parte1.dbml   <- sua entrega (Parte 1, item b)
+  sql/modelo-logico-parte2.dbml   <- sua entrega (Parte 2)
+  sql/modelo-logico.md            <- sua entrega (textos das duas partes)
+  documentacao/enunciado.md       <- enunciado completo da atividade
 
 Como visualizar seu diagrama enquanto edita:
-  1. Abra sql/modelo-logico.md
-  2. Ctrl+Shift+V (ou Cmd+Shift+V no Mac) abre a pré-visualização
-     Markdown, que já renderiza os blocos ```mermaid``` graças à
-     extensão "Markdown Preview Mermaid Support".
-  GitHub também renderiza Mermaid automaticamente ao visualizar o
-  arquivo pelo navegador — útil para conferir antes do PR.
+  1. Abra um arquivo .dbml — a extensão "dbdiagram" já dá highlight
+     de sintaxe e um preview de ERD dentro do próprio VS Code.
+  2. Ou cole o conteúdo do arquivo em https://dbdiagram.io (New
+     Diagram > editor à esquerda) para visualizar — não precisa de
+     conta. O que vale como entrega é o arquivo .dbml no seu fork.
 
 Como conferir sua entrega antes de abrir o Pull Request:
   python tests/regras_avaliacao.py
 
 Como entregar:
-  1. git add sql/modelo-logico.md
+  1. git add sql/modelo-logico-parte1.dbml sql/modelo-logico-parte2.dbml sql/modelo-logico.md
   2. git commit -m "Entrega Aula 02"
   3. git push origin entrega/<SEU-RA>-<seu-usuario-github>
   4. Abra um Pull Request no GitHub, do seu fork para o repositório

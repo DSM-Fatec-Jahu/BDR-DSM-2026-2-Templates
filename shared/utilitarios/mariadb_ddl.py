@@ -12,7 +12,7 @@ diferentes que cheguem ao mesmo schema.
 Depende só do cliente `mysql` de linha de comando (biblioteca padrão do
 Python via `subprocess` — nenhum pacote pip como `mysql-connector-python` é
 instalado), mesma filosofia de "sem dependência externa" já usada em
-`mer_mermaid.py`.
+`mer_dbml.py`.
 """
 from __future__ import annotations
 

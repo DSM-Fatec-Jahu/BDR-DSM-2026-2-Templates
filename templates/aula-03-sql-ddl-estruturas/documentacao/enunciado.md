@@ -50,8 +50,7 @@ com as duas partes abaixo, executado de cima para baixo em uma única sessão
 ### Parte 1 — `CREATE DATABASE` e `CREATE TABLE`
 
 **a) Banco de dados.** Crie o banco `helpdesk_ti`, seguindo exatamente o
-padrão da Seção 4.5 da aula: idempotente (`IF NOT EXISTS`), com
-`CHARACTER SET utf8mb4` e `COLLATE utf8mb4_unicode_ci`.
+padrão da Seção 4.5 da aula: idempotente (validando se ele já existe), com charset e colation corretos.
 
 **b) Tabelas.** Crie as cinco tabelas abaixo, com todas as colunas, PKs, FKs
 e constraints descritas. **Toda tabela leva os três campos de log da Regra

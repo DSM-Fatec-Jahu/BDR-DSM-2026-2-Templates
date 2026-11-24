@@ -56,12 +56,14 @@ Ao concluir esta atividade você terá praticado:
    options..."). O Codespace já abre **direto nesta pasta**, com este
    `README.md` e o `documentacao/enunciado.md` abertos automaticamente — não
    precisa navegar pelo repositório.
-2. Edite [`sql/modelo-logico.md`](sql/modelo-logico.md) — é o único
-   arquivo que você precisa alterar. O enunciado completo está em
+2. Edite [`sql/modelo-logico-parte1.dbml`](sql/modelo-logico-parte1.dbml),
+   [`sql/modelo-logico-parte2.dbml`](sql/modelo-logico-parte2.dbml) e
+   [`sql/modelo-logico.md`](sql/modelo-logico.md) — são os três arquivos
+   que você precisa alterar. O enunciado completo está em
    [`documentacao/enunciado.md`](documentacao/enunciado.md).
-3. Visualize seu diagrama com `Ctrl+Shift+V` (preview Markdown) enquanto
-   edita, ou olhando o arquivo pela interface do GitHub (que também
-   renderiza Mermaid nativamente).
+3. Visualize cada `.dbml` colando o conteúdo em
+   [dbdiagram.io](https://dbdiagram.io) (New Diagram → editor à esquerda,
+   sem precisar de conta). O que vale como entrega é o arquivo no seu fork.
 4. Antes de entregar, rode a correção localmente para conferir sua nota
    formativa:
 
@@ -71,20 +73,20 @@ Ao concluir esta atividade você terá praticado:
 
 ## Entregável
 
-Só o arquivo `sql/modelo-logico.md`, com as duas partes preenchidas
-(mapeamento de dependências + modelo lógico da Oficina Mecânica;
-modelo lógico + justificativa da Rede de Hotéis).
+Os três arquivos em `sql/`: `modelo-logico-parte1.dbml` (modelo final da
+Oficina Mecânica), `modelo-logico-parte2.dbml` (modelo da Rede de Hotéis) e
+`modelo-logico.md` (mapeamento de dependências + justificativa da FK 1:1).
 
 ## Critérios de avaliação e correção automática
 
 A correção automática roda no Pull Request e confere **estrutura**, não
 texto exato: existência das tabelas exigidas, nomenclatura de PK/FK
-(Regras 5 e 6 da disciplina), cardinalidade e participação de cada
-relacionamento, e o preenchimento mínimo das duas análises escritas (o
-mapeamento de dependências funcionais da Parte 1 e a justificativa da FK
-1:1 da Parte 2 — a qualidade do argumento em si é revisada pelo professor).
-O rótulo do relacionamento (o verbo) não é validado — só a estrutura
-importa. Detalhes completos em
+(Regras 5 e 6 da disciplina), cardinalidade de cada relacionamento e
+participação onde ela é representável em DBML (nulidade da coluna FK), e o
+preenchimento mínimo das duas análises escritas (o mapeamento de
+dependências funcionais da Parte 1 e a justificativa da FK 1:1 da Parte 2 —
+a qualidade do argumento em si é revisada pelo professor). O comentário de
+cada `Ref:` não é validado — só a estrutura importa. Detalhes completos em
 [`documentacao/enunciado.md`](documentacao/enunciado.md#critérios-de-avaliação).
 
 O resultado aparece automaticamente como **comentário no seu Pull Request**

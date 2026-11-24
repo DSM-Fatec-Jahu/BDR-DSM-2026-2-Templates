@@ -1,0 +1,30 @@
+// Aula 01 — Modelagem Conceitual (MER) — Parte 1: MER da Clínica Médica
+//
+// Escreva aqui o seu modelo completo em DBML. Para visualizar enquanto edita,
+// cole o conteúdo deste arquivo em https://dbdiagram.io (New Diagram > cole
+// no editor à esquerda) — o diagrama aparece à direita em tempo real. Depois
+// de terminar, copie o DBML de volta para este arquivo (o que vale para a
+// entrega é o `.dbml` no seu fork, não o que ficou salvo no site).
+//
+// Consulte o enunciado completo em ../documentacao/enunciado.md antes de
+// começar.
+//
+// TODO: troque o esqueleto abaixo pelo seu modelo completo. Sua entrega
+// precisa conter, no mínimo, as tabelas pacientes, medicos, especialidades,
+// consultas e prontuarios, com PK/FK corretas (Regras 5 e 6) e um `Ref:`
+// para cada relacionamento, com a cardinalidade certa. Pense com cuidado em
+// dois pontos (ver enunciado): Médico × Especialidade, e Consulta × Prontuário.
+
+Table pacientes {
+  id_paciente bigint [pk]
+  nome varchar
+}
+
+// TODO: adicione "Table medicos { ... }", "Table especialidades { ... }",
+// "Table consultas { ... }" e "Table prontuarios { ... }" — cada uma com sua
+// PK (id_<tabela> — Regra 5) e as colunas FK necessárias (Regra 6).
+
+// TODO: adicione um "Ref:" para cada relacionamento. Operadores disponíveis:
+//   >   muitos-para-um   (Ref: tabela_muitos.fk_id > tabela_um.pk_id)
+//   -   um-para-um
+//   <>  muitos-para-muitos (sem coluna FK física — é o caso Médico×Especialidade)

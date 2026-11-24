@@ -1,9 +1,13 @@
 # Entrega — Aula 02 — Normalização e Modelo Lógico
 
-> Preencha as duas partes abaixo substituindo os blocos `erDiagram` de
-> exemplo e os campos de texto pelo seu conteúdo. Não apague os comentários
-> `%%` dentro dos blocos — eles orientam o que é esperado — mas o conteúdo
-> do diagrama em si é seu.
+> Sua entrega tem três arquivos nesta mesma pasta:
+>
+> - [`modelo-logico-parte1.dbml`](modelo-logico-parte1.dbml) — modelo final
+>   (3FN) da Oficina Mecânica
+> - [`modelo-logico-parte2.dbml`](modelo-logico-parte2.dbml) — modelo
+>   lógico da Rede de Hotéis
+> - Este arquivo (`modelo-logico.md`) — os dois campos de texto abaixo, que
+>   não dá para representar em DBML
 >
 > Consulte o enunciado completo em
 > [`documentacao/enunciado.md`](../documentacao/enunciado.md) antes de
@@ -15,15 +19,14 @@
 
 ---
 
-## Parte 1 — Normalização até a 3FN — Oficina Mecânica
-
-### a) Mapeamento de dependências funcionais
+## Parte 1 — a) Mapeamento de dependências funcionais
 
 > Mapeie as dependências da tabela desnormalizada em relação à chave
 > composta `(id_ordem, cod_servico)`, seguindo o formato das Seções 4.2/5.2
 > da aula (`X → Y`, indicando total/parcial/transitiva). Não esqueça das
 > dependências transitivas "escondidas" dentro das parciais (veja o
-> enunciado).
+> enunciado). O modelo final (item b) fica em
+> [`modelo-logico-parte1.dbml`](modelo-logico-parte1.dbml).
 
 <!--
 Escreva aqui seu mapeamento de dependências. Exemplo do formato esperado
@@ -34,47 +37,14 @@ id_ordem                → data_servico  ⚠️  Dependência PARCIAL
 ...
 -->
 
-### b) Modelo lógico final (3FN)
-
-> Sua entrega precisa conter, no mínimo, as tabelas `CLIENTES`, `VEICULOS`,
-> `MECANICOS`, `SERVICOS`, `ORDENS_SERVICO` e `ITENS_ORDEM_SERVICO`, com
-> PKs/FKs corretas e cardinalidades corretas entre elas.
-
-```mermaid
-erDiagram
-    %% TODO: substitua este esqueleto pelo seu modelo final em 3FN.
-    %% Lembre-se: toda PK é id_tabela (Regra 5); mantenha placa/cpf/matricula
-    %% como atributos comuns (UNIQUE), não como chave primária.
-
-    CLIENTES {
-        BIGINT id_cliente PK
-        VARCHAR nome
-    }
-```
-
 ---
 
-## Parte 2 — Passagem ao Modelo Lógico — Rede de Hotéis
-
-> Aplique as regras da Seção 8 da aula aos quatro relacionamentos descritos
-> no enunciado (1:N, N:M com atributo, 1:1 e entidade fraca). Sua entrega
-> precisa conter, no mínimo, as tabelas `HOSPEDES`, `RESERVAS`, `QUARTOS`,
-> `RESERVAS_QUARTOS`, `CARTOES_FIDELIDADE` e `DIARIAS`.
-
-```mermaid
-erDiagram
-    %% TODO: substitua este esqueleto pelo seu modelo lógico completo.
-
-    HOSPEDES {
-        BIGINT id_hospede PK
-        VARCHAR nome
-    }
-```
-
-### Justificativa — FK do relacionamento 1:1
+## Parte 2 — Justificativa da FK do relacionamento 1:1
 
 > Em qual tabela você colocou a FK do relacionamento Hóspedes ×
 > Cartões_Fidelidade, e por quê? Releia o Critério 1 (participação) e o
-> Critério 2 (semântica) da Seção 8.1 antes de responder.
+> Critério 2 (semântica) da Seção 8.1 antes de responder — inclua na sua
+> resposta qual lado tem participação parcial (isso não dá para expressar
+> em DBML, então só é conferido aqui no texto).
 
 - **Justificativa:** <!-- explique em 2-4 frases -->

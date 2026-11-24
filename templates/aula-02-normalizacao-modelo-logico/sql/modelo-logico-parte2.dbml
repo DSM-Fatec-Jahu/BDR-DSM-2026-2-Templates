@@ -1,0 +1,20 @@
+// Aula 02 — Normalização e Modelo Lógico — Parte 2: Rede de Hotéis
+//
+// Mesmo fluxo da Parte 1: cole em https://dbdiagram.io para visualizar,
+// edite aqui o que vale como entrega. Depois de montar o diagrama, preencha
+// a Justificativa da FK do relacionamento 1:1 em ../sql/modelo-logico.md.
+//
+// Consulte o enunciado completo em ../documentacao/enunciado.md.
+//
+// TODO: troque o esqueleto abaixo pelo seu modelo completo. Sua entrega
+// precisa conter, no mínimo, hospedes, reservas, quartos, reservas_quartos,
+// cartoes_fidelidade e diarias.
+
+Table hospedes {
+  id_hospede bigint [pk]
+  nome varchar
+}
+
+// TODO: adicione reservas, quartos, reservas_quartos (N:M com atributo
+// próprio, PK composta), cartoes_fidelidade (1:1 com hospedes) e diarias
+// (entidade fraca: PK composta reserva_id + numero_diaria).
